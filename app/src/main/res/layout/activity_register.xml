@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#64B7C9"
+    tools:context=".Register">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:srcCompat="@drawable/back1"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/irish_grover"
+            android:text="Register"
+            android:textColor="@color/black"
+            android:textSize="50sp"
+            android:layout_marginTop="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inika"
+            android:text="Age:"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView" />
+
+        <EditText
+            android:id="@+id/editTextText"
+            android:layout_width="135dp"
+            android:layout_height="31dp"
+            android:ems="10"
+            android:inputType="number"
+            android:paddingLeft="10dp"
+            android:hint="Enter age"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
+            android:fontFamily="@font/inika"
+            android:textSize="20sp"
+            android:background="@drawable/rounded_button1"
+            android:layout_marginStart="110dp"
+            android:layout_marginTop="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inika"
+            android:text="Gender:"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextText" />
+
+        <EditText
+            android:id="@+id/editTextText1"
+            android:layout_width="145dp"
+            android:layout_height="31dp"
+            android:ems="10"
+            android:inputType="text"
+            android:paddingLeft="10dp"
+            android:hint="Enter gender"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
+            android:fontFamily="@font/inika"
+            android:textSize="20sp"
+            android:background="@drawable/rounded_button1"
+            android:layout_marginStart="110dp"
+            android:layout_marginTop="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextText" />
+
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inika"
+            android:text="Career Focuses::"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextText1" />
+
+        <EditText
+            android:id="@+id/editTextText2"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="Provide a discription of your\nused career"
+            android:gravity="center"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
+            android:fontFamily="@font/inika"
+            android:textSize="20sp"
+            android:background="@drawable/rounded_button1"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView3" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="134dp"
+            android:layout_height="48dp"
+            android:text="Register"
+            android:textAllCaps="false"
+            android:fontFamily="@font/inika"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:background="@drawable/rounded_button1"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextText2" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="432dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="24dp"
+            android:alpha="0.80"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/register" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

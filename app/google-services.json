@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "756903487544",
+    "project_id": "careercrew-ca56d",
+    "storage_bucket": "careercrew-ca56d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:756903487544:android:f1cf9123a7a6758d039ecd",
+        "android_client_info": {
+          "package_name": "com.example.careercrew"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4tyPQJI1URAbyPjG8kupcbQcZss9vjnU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

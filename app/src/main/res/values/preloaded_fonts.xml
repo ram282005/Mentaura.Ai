@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/</item>
+        <item>@font/inika</item>
+        <item>@font/inter</item>
+        <item>@font/irish_grover</item>
+    </array>
+</resources>

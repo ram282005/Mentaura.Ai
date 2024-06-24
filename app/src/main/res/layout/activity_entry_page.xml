@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#64B7C9"
+    tools:context=".EntryPage">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="393dp"
+            android:layout_height="566dp"
+            app:srcCompat="@drawable/entrypage1"
+            android:alpha="0.15"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="350dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="405dp"
+            android:layout_height="373dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/entrypage2" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_marginTop="340dp"
+            android:fontFamily="@font/inter"
+            android:text="CAREER GURU.AI"
+            android:textColor="@color/white"
+            android:textSize="45sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_marginTop="425dp"
+            android:text="ELEVATE YOUR CAREER WITH AI GURU"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="216dp"
+            android:layout_height="24dp"
+            android:text="Don’t have an account!"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="620dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"  />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="200dp"
+            android:layout_height="74dp"
+            android:layout_marginTop="485dp"
+            android:background="@drawable/rounded_button"
+            android:fontFamily="@font/inter"
+            android:text="Log in"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="137dp"
+            android:layout_height="wrap_content"
+            android:text="Sign up"
+            android:textAllCaps="false"
+            android:fontFamily="@font/inter"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:background="@drawable/rounded_button"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="660dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
