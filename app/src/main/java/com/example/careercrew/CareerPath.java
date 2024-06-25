@@ -46,21 +46,18 @@ public class CareerPath extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_career_path);
 
-        // Initialize views
         messageList = new ArrayList<>();
         recyclerView = findViewById(R.id.recycler_view);
         welcomeTextView = findViewById(R.id.welcome_text);
         messageEditText = findViewById(R.id.message_edit_text);
         sendButton = findViewById(R.id.send_btn);
 
-        // Setup RecyclerView
         messageAdapter = new MessageAdapter(messageList);
         recyclerView.setAdapter(messageAdapter);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setStackFromEnd(true);
         recyclerView.setLayoutManager(llm);
 
-        // Set send button click listener
         sendButton.setOnClickListener(v -> {
             String question = messageEditText.getText().toString().trim();
             if (!question.isEmpty()) {
