@@ -30,8 +30,8 @@
             android:textColor="@color/black"
             android:textSize="50sp"
             android:layout_marginTop="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -102,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inika"
-            android:text="Career Focuses::"
+            android:text="Career Focuses:"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:layout_marginStart="23dp"
@@ -112,12 +112,12 @@
 
         <EditText
             android:id="@+id/editTextText2"
-            android:layout_width="330dp"
+            android:layout_width="363dp"
             android:layout_height="wrap_content"
             android:paddingLeft="30dp"
             android:ems="10"
             android:inputType="text"
-            android:hint="Provide a discription of your\nused career"
+            android:hint="Provide a description of your career"
             android:gravity="center"
             android:textColorHint="@color/black"
             android:textColor="@color/black"
@@ -154,6 +154,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/register" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="40dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

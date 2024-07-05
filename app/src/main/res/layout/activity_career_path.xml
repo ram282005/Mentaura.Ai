@@ -7,6 +7,8 @@
     android:background="#0C5D80"
     tools:context=".CareerPath">
 
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

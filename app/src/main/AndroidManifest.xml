@@ -20,8 +20,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/logocareer"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Careercrew"
+        android:theme="@style/Theme.CareerGuru"
         tools:targetApi="31">
+        <activity
+            android:name=".SubscriptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CourseRecommendationActivity"
+            android:exported="false" />
         <activity
             android:name=".HomePage"
             android:exported="false" />
@@ -29,13 +35,7 @@
             android:name=".Register"
             android:exported="false" />
         <activity
-            android:name=".DreamRole1"
-            android:exported="false" />
-        <activity
             android:name=".DreamRole"
-            android:exported="false" />
-        <activity
-            android:name=".CareerPath1"
             android:exported="false" />
         <activity
             android:name=".CareerPath"
@@ -61,10 +61,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

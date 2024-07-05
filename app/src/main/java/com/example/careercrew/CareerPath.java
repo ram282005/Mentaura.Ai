@@ -1,138 +1,78 @@
 package com.example.careercrew;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class CareerPath extends AppCompatActivity {
-    RecyclerView recyclerView;
-    TextView welcomeTextView;
-    EditText messageEditText;
-    ImageButton sendButton;
-    List<Message> messageList;
-    MessageAdapter messageAdapter;
 
-    OkHttpClient client = new OkHttpClient();
+    private EditText editTextCareerGoal;
+    private Button buttonSubmit;
+    private FirebaseAuth mAuth;
+    private DatabaseReference dbRef;
 
-    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
-    
-    String apiKey = "YjU2NjM5YTdmZTMwNDBhNDk0MDg1OWJjM2VlZmQ5YTA=";
-
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_career_path);
 
-        messageList = new ArrayList<>();
-        recyclerView = findViewById(R.id.recycler_view);
-        welcomeTextView = findViewById(R.id.welcome_text);
-        messageEditText = findViewById(R.id.message_edit_text);
-        sendButton = findViewById(R.id.send_btn);
+        mAuth = FirebaseAuth.getInstance();
+        dbRef = FirebaseDatabase.getInstance().getReference();
 
-        messageAdapter = new MessageAdapter(messageList);
-        recyclerView.setAdapter(messageAdapter);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setStackFromEnd(true);
-        recyclerView.setLayoutManager(llm);
+        editTextCareerGoal = findViewById(R.id.message_edit_text);
+        buttonSubmit = findViewById(R.id.send_btn);
 
-        sendButton.setOnClickListener(v -> {
-            String question = messageEditText.getText().toString().trim();
-            if (!question.isEmpty()) {
-                addToChat(question, Message.SENT_BY_ME);
-                messageEditText.setText("");
-                welcomeTextView.setVisibility(View.GONE);
-                callAPI(question);
+        buttonSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitCareerGoalData();
+            }
+        });
+    }
+
+    private void submitCareerGoalData() {
+        String careerGoal = editTextCareerGoal.getText().toString().trim();
+
+        if (careerGoal.isEmpty()) {
+            Toast.makeText(CareerPath.this, "Please fill in the career goal", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            String email = currentUser.getEmail();
+            if (email != null) {
+                String emailKey = email.replace(".", ",");
+
+                // Update user data with Career Goal
+                dbRef.child("users").child(emailKey).child("careerGoal").setValue(careerGoal);
+                dbRef.child("users").child(emailKey).child("completed").setValue(true)
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(CareerPath.this, "Data saved successfully", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(CareerPath.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(CareerPath.this, "Failed to save data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
             } else {
-                Toast.makeText(this, "Please enter a message", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CareerPath.this, "Error retrieving user email", Toast.LENGTH_SHORT).show();
             }
-        });
-    }
-
-    void addToChat(String message, int sentBy) {
-        runOnUiThread(() -> {
-            messageList.add(new Message(message, sentBy));
-            messageAdapter.notifyDataSetChanged();
-            recyclerView.smoothScrollToPosition(messageAdapter.getItemCount());
-        });
-    }
-
-    void callAPI(String question) {
-        JSONObject jsonBody1 = new JSONObject();
-        try {
-            jsonBody1.put("personaId", "33ff52bf-9969-4edd-9ca1-76b1c4843188");
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } else {
+            Toast.makeText(CareerPath.this, "User not authenticated", Toast.LENGTH_SHORT).show();
         }
-
-        JSONObject jsonBody2 = new JSONObject();
-        try {
-            jsonBody2.put("message", question);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        String jsonString1 = jsonBody1.toString();
-        RequestBody body1 = RequestBody.create(jsonString1, JSON);
-        Request request1 = new Request.Builder()
-                .url("https://api.hyperleap.ai/conversations/persona")
-                .addHeader("appId", "cid-v1:e0dbebc6-6232-44bb-bfc6-223d5cdb4881")
-                .addHeader("x-hl-api-key", apiKey)
-                .post(body1)
-                .build();
-
-        String jsonString2 = jsonBody2.toString();
-        RequestBody body2 = RequestBody.create(jsonString2, JSON);
-        Request request2 = new Request.Builder()
-                .url("https://api.hyperleap.ai/conversations/{conversationId}/continue-sync")
-                .addHeader("appId", "cid-v1:e0dbebc6-6232-44bb-bfc6-223d5cdb4881")
-                .addHeader("x-hl-api-key", apiKey)
-                .post(body2)
-                .build();
-
-        client.newCall(request1).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(CareerPath.this, "API request failed", Toast.LENGTH_SHORT).show());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    String responseBody = response.body().string();
-                    try {
-                        JSONObject jsonResponse = new JSONObject(responseBody);
-                        String conversationId = jsonResponse.getString("conversationId");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    runOnUiThread(() -> Toast.makeText(CareerPath.this, "API response error", Toast.LENGTH_SHORT).show());
-                }
-            }
-        });
     }
 }

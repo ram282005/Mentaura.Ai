@@ -12,7 +12,20 @@
           "package_name": "com.example.careercrew"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "756903487544-rlk3k563j1e4kn6vpc8k0bfrg6ssq10u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.careercrew",
+            "certificate_hash": "1e47b7db4ecf81dd82bbf9b288854b90629aaca8"
+          }
+        },
+        {
+          "client_id": "756903487544-kvp5fleh2pgivu2m4d3761mrb83c6em1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC4tyPQJI1URAbyPjG8kupcbQcZss9vjnU"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "756903487544-kvp5fleh2pgivu2m4d3761mrb83c6em1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

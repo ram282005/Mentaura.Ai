@@ -5,37 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#077A9F"
-    tools:context=".MainActivity">
+    tools:context=".HomePage">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            app:srcCompat="@drawable/back"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/buttonenterdetails"
             android:layout_width="156dp"
             android:layout_height="69dp"
-            android:text="Register Now"
-            android:textAllCaps="false"
-            android:gravity="center"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/rounded_button1"
             android:fontFamily="@font/inika"
+            android:gravity="center"
+            android:text="Enter Details now"
+            android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:background="@drawable/rounded_button1"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="50dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView"
@@ -49,10 +41,10 @@
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button" />
+            app:layout_constraintTop_toBottomOf="@id/buttonenterdetails" />
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/buttonDiscoverCareer"
             android:layout_width="293dp"
             android:layout_height="93dp"
             android:text="Discover Your Career Path with us"
@@ -67,7 +59,7 @@
             app:layout_constraintTop_toBottomOf="@id/textView" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/buttonDreamRole"
             android:layout_width="293dp"
             android:layout_height="93dp"
             android:text="Attain Your Dream Role with our Assistance"
@@ -79,7 +71,7 @@
             android:layout_marginTop="60dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button1" />
+            app:layout_constraintTop_toBottomOf="@id/buttonDiscoverCareer" />
 
         <ImageView
             android:id="@+id/imageView1"

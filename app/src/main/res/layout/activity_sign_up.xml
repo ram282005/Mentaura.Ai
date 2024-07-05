@@ -88,7 +88,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView2" />
 
-
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
@@ -130,10 +129,13 @@
             android:textSize="30sp"
             android:textColor="@color/white"
             android:background="@drawable/rounded_button"
-            android:layout_marginTop="90dp"
+            android:layout_marginTop="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/editTextText2" />
+
+        <!-- Google One Tap Sign-Up Button -->
+
 
         <ImageView
             android:id="@+id/imageView"
@@ -145,6 +147,18 @@
             android:layout_marginTop="220dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="40dp"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

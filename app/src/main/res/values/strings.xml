@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">careercrew</string>
+    <string name="default_web_client_id">756903487544-rlk3k563j1e4kn6vpc8k0bfrg6ssq10u.apps.googleusercontent.com</string> <!-- Replace with your actual web client ID from Firebase console -->
+
 </resources>

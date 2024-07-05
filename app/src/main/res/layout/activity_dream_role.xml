@@ -11,15 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            app:srcCompat="@drawable/back2"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
 
         <ImageView
             android:id="@+id/imageView1"
@@ -31,6 +23,52 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/tv_dream_role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dream Role"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="100dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_dream_role"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Enter your dream role"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintStart_toEndOf="@id/tv_dream_role"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_dream_role" />
+
+        <TextView
+            android:id="@+id/tv_dream_company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dream Company"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_dream_role" />
+
+        <EditText
+            android:id="@+id/et_dream_company"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Enter your dream company"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintStart_toEndOf="@id/tv_dream_company"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_dream_company" />
+
         <Button
             android:id="@+id/button"
             android:layout_width="194dp"
@@ -41,10 +79,10 @@
             android:textSize="30sp"
             android:textColor="@color/black"
             android:background="@drawable/rounded_button2"
-            android:layout_marginTop="700dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/et_dream_company" />
 
         <ImageView
             android:id="@+id/imageView2"
