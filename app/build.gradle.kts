@@ -30,22 +30,34 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
+    implementation(libs.firebase.storage)
     testImplementation(libs.junit)
+    implementation(libs.picasso)
+    implementation(libs.circleImageView)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.database)
     implementation(libs.firebase.ui.database)
+    implementation(libs.preference)
     implementation(libs.firebase.auth)
+    implementation(libs.json)
+    implementation(libs.okhttp)
+    implementation(libs.gson)
     implementation(libs.play.services.auth)
+    implementation(libs.firebase.messaging)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }

@@ -5,13 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0C5D80"
-    tools:context=".CareerPath">
+    tools:context=".DreamRole">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-
 
         <ImageView
             android:id="@+id/imageView1"
@@ -24,22 +22,35 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageView1" />
+
+        <TextView
             android:id="@+id/tv_dream_role"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dream Role"
             android:textSize="20sp"
             android:textColor="@android:color/white"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/tv_message" />
 
         <EditText
             android:id="@+id/et_dream_role"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Enter your dream role"
+            android:textColor="@color/black"
+            android:background="@drawable/edittext_background"
+            android:padding="10dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintStart_toEndOf="@id/tv_dream_role"
@@ -62,7 +73,9 @@
             android:id="@+id/et_dream_company"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Enter your dream company"
+            android:textColor="@color/black"
+            android:background="@drawable/edittext_background"
+            android:padding="10dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintStart_toEndOf="@id/tv_dream_company"
@@ -84,6 +97,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_dream_company" />
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button" />
+
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="234dp"
@@ -91,9 +114,9 @@
             app:srcCompat="@drawable/careerpath"
             android:alpha="0.20"
             android:layout_marginStart="-19dp"
-            android:layout_marginTop="650dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/progress_bar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

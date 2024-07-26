@@ -7,7 +7,12 @@ public class User {
     private String age;
     private String gender;
     private String careerFocus;
-    private String lastChoice;  // New field
+    private String lastChoice; // New field
+
+    // Fields for AI job recommendations
+    private String aijobrecommended1;
+    private String aijobrecommended2;
+    private String aijobrecommended3;
 
     // Default constructor required for calls to DataSnapshot.getValue(User.class)
     public User() {
@@ -83,5 +88,29 @@ public class User {
 
     public void setLastChoice(String lastChoice) {
         this.lastChoice = lastChoice;
+    }
+
+    public String getAijobrecommended1() {
+        return aijobrecommended1;
+    }
+
+    public void setAijobrecommended1(String aijobrecommended1) {
+        this.aijobrecommended1 = aijobrecommended1;
+    }
+
+    public String getAijobrecommended2() {
+        return aijobrecommended2;
+    }
+
+    public void setAijobrecommended2(String aijobrecommended2) {
+        this.aijobrecommended2 = aijobrecommended2;
+    }
+
+    public String getAijobrecommended3() {
+        return aijobrecommended3;
+    }
+
+    public void setAijobrecommended3(String aijobrecommended3) {
+        this.aijobrecommended3 = aijobrecommended3;
     }
 }

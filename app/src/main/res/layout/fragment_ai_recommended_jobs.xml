@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#0C5D80">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AI Recommended Jobs"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal" />
+
+        <RadioGroup
+            android:id="@+id/job_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp">
+
+            <RadioButton
+                android:id="@+id/job1_radio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Job 1"
+                android:textColor="@android:color/white" />
+
+            <RadioButton
+                android:id="@+id/job2_radio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Job 2"
+                android:textColor="@android:color/white" />
+
+            <RadioButton
+                android:id="@+id/job3_radio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Job 3"
+                android:textColor="@android:color/white" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+</RelativeLayout>

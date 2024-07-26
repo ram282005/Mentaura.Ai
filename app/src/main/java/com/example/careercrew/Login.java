@@ -1,5 +1,6 @@
 package com.example.careercrew;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,9 +30,11 @@ public class Login extends AppCompatActivity {
     private EditText editTextEmail, editTextPassword;
     private Button buttonLogin;
     private ProgressBar progressBar;
+    private TextView textViewForgotPassword;
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +48,7 @@ public class Login extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextText2);
         buttonLogin = findViewById(R.id.button);
         progressBar = findViewById(R.id.progressBar);
+        textViewForgotPassword = findViewById(R.id.textViewForgotPassword);
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +61,19 @@ public class Login extends AppCompatActivity {
                     loginUser(email, password);
                 } else {
                     Toast.makeText(Login.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        textViewForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = editTextEmail.getText().toString().trim();
+                if (!email.isEmpty()) {
+                    progressBar.setVisibility(View.VISIBLE); // Show the progress bar
+                    resetPassword(email);
+                } else {
+                    Toast.makeText(Login.this, "Please enter your email to reset password", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -98,16 +116,23 @@ public class Login extends AppCompatActivity {
 
                     if (ageExists && genderExists && careerFocusExists) {
                         if (dreamRoleExists && dreamCompanyExists) {
-                            // All details including dreamRole and dreamCompany are present
-                            Log.d("Login", "All details are present, navigating to CourseRecommendationActivity");
-                            navigateToActivity(CourseRecommendationActivity.class);
+                            boolean isPremium = dataSnapshot.child("isPremium").getValue(Boolean.class);
+                            if (isPremium) {
+                                // User is premium, navigate to MainActivity
+                                Log.d("Login", "Premium user, navigating to MainActivity");
+                                navigateToActivity(MainActivity.class);
+                            } else {
+                                // User is free, navigate to HomePage
+                                Log.d("Login", "Free user, navigating to HomePage");
+                                navigateToActivity(HomePage.class);
+                            }
                         } else {
-                            checkLastChoice(emailKey);
+                            checkLastActivity(emailKey);
                         }
                     } else {
-                        // Registration is incomplete
-                        Log.d("Login", "Registration is incomplete, navigating to Register");
-                        navigateToActivity(Register.class);
+                        // Registration is incomplete, check for last activity
+                        Log.d("Login", "Registration is incomplete, checking last activity");
+                        checkLastActivity(emailKey);
                     }
                 } else {
                     // No user data found, go to Register page
@@ -125,21 +150,31 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    private void checkLastChoice(String emailKey) {
-        DatabaseReference lastChoiceRef = databaseReference.child("users").child(emailKey).child("lastChoice");
-        lastChoiceRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void checkLastActivity(String emailKey) {
+        DatabaseReference lastActivityRef = databaseReference.child("users").child(emailKey).child("lastActivity");
+        lastActivityRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    String lastChoice = dataSnapshot.getValue(String.class);
-                    Log.d("Login", "Navigating to LastChoiceHandler with lastChoice: " + lastChoice);
-                    Intent intent = new Intent(Login.this, LastChoiceHandler.class);
-                    intent.putExtra("lastChoice", lastChoice);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK); // Clear the back stack
-                    startActivity(intent);
-                    finish();
+                    String lastActivity = dataSnapshot.getValue(String.class);
+                    if (lastActivity != null && !lastActivity.isEmpty()) {
+                        try {
+                            Class<?> activityClass = Class.forName("com.example.careercrew." + lastActivity);
+                            Log.d("Login", "Navigating to last activity: " + lastActivity);
+                            Intent intent = new Intent(Login.this, activityClass);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK); // Clear the back stack
+                            startActivity(intent);
+                            finish();
+                        } catch (ClassNotFoundException e) {
+                            Log.e("Login", "ClassNotFoundException: " + e.getMessage());
+                            navigateToActivity(HomePage.class);
+                        }
+                    } else {
+                        Log.d("Login", "No last activity found, navigating to HomePage");
+                        navigateToActivity(HomePage.class);
+                    }
                 } else {
-                    Log.d("Login", "No last choice found, navigating to HomePage");
+                    Log.d("Login", "No last activity data found, navigating to HomePage");
                     navigateToActivity(HomePage.class);
                 }
             }
@@ -150,6 +185,22 @@ public class Login extends AppCompatActivity {
                 navigateToActivity(HomePage.class);
             }
         });
+    }
+
+
+    private void resetPassword(String email) {
+        mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        progressBar.setVisibility(View.GONE); // Hide the progress bar
+                        if (task.isSuccessful()) {
+                            Toast.makeText(Login.this, "Password reset email sent!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(Login.this, "Failed to send reset email: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     private void navigateToActivity(Class<?> targetActivity) {

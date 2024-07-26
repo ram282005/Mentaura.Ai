@@ -86,6 +86,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView3" />
 
+        <TextView
+            android:id="@+id/textViewForgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password?"
+            android:textColor="@color/white"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/inika"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextText2"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onForgotPasswordClick"/>
+
         <Button
             android:id="@+id/button"
             android:layout_width="183dp"
@@ -105,12 +121,12 @@
             android:id="@+id/imageView"
             android:layout_width="393dp"
             android:layout_height="566dp"
-            app:srcCompat="@drawable/entrypage1"
-            android:alpha="0.15"
             android:layout_marginStart="-8dp"
-            android:layout_marginTop="335dp"
+            android:layout_marginTop="296dp"
+            android:alpha="0.15"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/entrypage1" />
 
         <ProgressBar
             android:id="@+id/progressBar"

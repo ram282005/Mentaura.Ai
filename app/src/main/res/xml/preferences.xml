@@ -1,0 +1,46 @@
+<!-- res/xml/preferences.xml -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="General Settings">
+        <SwitchPreferenceCompat
+            android:key="notifications"
+            android:title="Enable Notifications"
+            android:summary="Receive notifications from this app" />
+
+        <SwitchPreferenceCompat
+            android:key="dark_mode"
+            android:title="Dark Mode"
+            android:summary="Enable dark mode theme" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Account Settings">
+        <EditTextPreference
+            android:key="phone_number"
+            android:title="Verify Your Phone Number"
+            android:summary="Set your phone number"
+            android:inputType="phone" />
+
+        <Preference
+            android:key="change_password"
+            android:title="Change Password"
+            android:summary="Change your account password" />
+
+        <Preference
+            android:key="delete_account"
+            android:title="Delete Your Account"
+            android:summary="Delete your account permanently" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Privacy Settings">
+        <SwitchPreferenceCompat
+            android:key="location_services"
+            android:title="Location Services"
+            android:summary="Allow this app to access your location" />
+
+        <SwitchPreferenceCompat
+            android:key="data_collection"
+            android:title="Data Collection"
+            android:summary="Allow this app to collect usage data" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

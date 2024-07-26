@@ -1,10 +1,10 @@
 package com.example.careercrew;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +25,7 @@ public class CourseRecommendationActivity extends AppCompatActivity {
     private TextView textViewCourses;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
+    private ImageView imageViewHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,25 +34,21 @@ public class CourseRecommendationActivity extends AppCompatActivity {
 
         buttonPayUs = findViewById(R.id.button_pay_us);
         textViewCourses = findViewById(R.id.text_view_courses);
+        imageViewHome = findViewById(R.id.imageView1);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        SharedPreferences preferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("last_activity", "CourseRecommendationActivity");
-        editor.apply();
 
-        saveCurrentActivity();
-        fetchUserDetails();
+
+        imageViewHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CourseRecommendationActivity.this, HomePage.class);
+                startActivity(intent);
+            }
+        });
     }
-
-    @Override
-    public void onBackPressed() {
-        moveTaskToBack(true);
-    }
-
-
 
 
     private void fetchUserDetails() {
@@ -93,8 +90,7 @@ public class CourseRecommendationActivity extends AppCompatActivity {
 
     private void displayCourseRecommendations(String dreamRole, String dreamCompany) {
         String coursesText = "Courses according to your knowledge to crack your dream role in your dream company: "
-                + dreamRole + " at " + dreamCompany + "\n\n"
-                ;
+                + dreamRole + " at " + dreamCompany + "\n\n";
         textViewCourses.setText(coursesText);
     }
 
@@ -110,14 +106,10 @@ public class CourseRecommendationActivity extends AppCompatActivity {
             buttonPayUs.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(CourseRecommendationActivity.this, SubscriptionActivity.class);
+                    Intent intent = new Intent(CourseRecommendationActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
             });
         }
-        }
-
     }
-
-
-
+}

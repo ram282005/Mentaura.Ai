@@ -1,11 +1,13 @@
 package com.example.careercrew;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +25,15 @@ public class SplashScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Load the theme from SharedPreferences before setting the content view
+        SharedPreferences sharedPreferences = getSharedPreferences("settings_preferences", MODE_PRIVATE);
+        boolean darkModeEnabled = sharedPreferences.getBoolean("dark_mode", false);
+        if (darkModeEnabled) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
@@ -35,7 +46,7 @@ public class SplashScreen extends AppCompatActivity {
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 if (currentUser != null) {
                     Log.d("SplashScreen", "User is logged in: " + currentUser.getEmail());
-                    checkUserDataCompletion(currentUser.getEmail().replace(".", ","));
+                    checkUserLastActivity(currentUser.getEmail().replace(".", ","));
                 } else {
                     Log.d("SplashScreen", "No user logged in, navigating to EntryPage");
                     startActivity(new Intent(SplashScreen.this, EntryPage.class));
@@ -45,29 +56,26 @@ public class SplashScreen extends AppCompatActivity {
         }, SPLASH_DELAY);
     }
 
-    private void checkUserDataCompletion(String emailKey) {
+    private void checkUserLastActivity(String emailKey) {
         DatabaseReference userRef = databaseReference.child("users").child(emailKey);
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    boolean dreamRoleExists = dataSnapshot.hasChild("dreamRole");
-                    boolean dreamCompanyExists = dataSnapshot.hasChild("dreamCompany");
+                    String lastActivity = dataSnapshot.child("lastActivity").getValue(String.class);
 
-                    if (dreamRoleExists && dreamCompanyExists) {
-                        Log.d("SplashScreen", "All details including dreamRole and dreamCompany are present");
-                        startActivity(new Intent(SplashScreen.this, CourseRecommendationActivity.class));
-                    } else {
-                        if (dataSnapshot.hasChild("lastChoice")) {
-                            String lastChoice = dataSnapshot.child("lastChoice").getValue(String.class);
-                            Log.d("SplashScreen", "Navigating to LastChoiceHandler with lastChoice: " + lastChoice);
-                            Intent intent = new Intent(SplashScreen.this, com.example.careercrew.LastChoiceHandler.class);
-                            intent.putExtra("lastChoice", lastChoice);
-                            startActivity(intent);
-                        } else {
-                            Log.d("SplashScreen", "Registration complete but dream role/company is not provided, navigating to DreamRole");
-                            startActivity(new Intent(SplashScreen.this, DreamRole.class));
+                    if (lastActivity != null && !lastActivity.isEmpty()) {
+                        try {
+                            Class<?> activityClass = Class.forName("com.example.careercrew." + lastActivity);
+                            Log.d("SplashScreen", "Navigating to last activity: " + lastActivity);
+                            startActivity(new Intent(SplashScreen.this, activityClass));
+                        } catch (ClassNotFoundException e) {
+                            Log.e("SplashScreen", "ClassNotFoundException: " + e.getMessage());
+                            startActivity(new Intent(SplashScreen.this, HomePage.class));
                         }
+                    } else {
+                        Log.d("SplashScreen", "No lastActivity found, navigating to HomePage");
+                        startActivity(new Intent(SplashScreen.this, HomePage.class));
                     }
                 } else {
                     Log.d("SplashScreen", "No user data found, navigating to Register page");

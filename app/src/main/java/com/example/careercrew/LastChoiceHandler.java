@@ -64,14 +64,17 @@ public class LastChoiceHandler extends AppCompatActivity {
     private void redirectBasedOnLastChoice(String lastChoice) {
         Intent newIntent;
         switch (lastChoice) {
-            case "option1":
+            case "CareerPath":
                 newIntent = new Intent(this, CareerPath.class);
                 break;
-            case "option2":
+            case "DreamRole":
                 newIntent = new Intent(this, DreamRole.class);
                 break;
-
+            default:
+                newIntent = new Intent(this, HomePage.class);
+                break;
         }
-
+        startActivity(newIntent);
+        finish();
     }
 }

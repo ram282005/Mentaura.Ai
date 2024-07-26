@@ -1,22 +1,40 @@
 package com.example.careercrew;
 
+import java.util.Date;
+
 public class Message {
-    public static final int SENT_BY_ME = 0;
-    public static final int SENT_BY_BOT = 1;
+    private String text;
+    private boolean isUser;
+    private boolean isTyping;
+    private Date timestamp;
 
-    private String content;
-    private int sentBy;
-
-    public Message(String content, int sentBy) {
-        this.content = content;
-        this.sentBy = sentBy;
+    public Message(String text, boolean isUser, Date timestamp) {
+        this.text = text;
+        this.isUser = isUser;
+        this.isTyping = false;
+        this.timestamp = timestamp;
     }
 
-    public String getContent() {
-        return content;
+    public Message(boolean isTyping) {
+        this.text = null;
+        this.isUser = false;
+        this.isTyping = isTyping;
+        this.timestamp = new Date();
     }
 
-    public int getSentBy() {
-        return sentBy;
+    public String getText() {
+        return text;
+    }
+
+    public boolean isUser() {
+        return isUser;
+    }
+
+    public boolean isTyping() {
+        return isTyping;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
     }
 }

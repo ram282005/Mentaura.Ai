@@ -23,6 +23,40 @@
         android:theme="@style/Theme.CareerGuru"
         tools:targetApi="31">
         <activity
+            android:name=".SubscriptionsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CoursesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AchievementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GoalsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CommunitiesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Help"
+            android:exported="false" />
+        <activity
+            android:name=".VerifyOtpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PaymentPage"
+            android:exported="false" />
+        <activity
+            android:name=".SubscriptionPage"
+            android:exported="false"
+            android:theme="@style/Theme.CareerGuru" />
+        <activity
             android:name=".SubscriptionActivity"
             android:exported="false" />
         <activity
@@ -53,6 +87,9 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
+            android:name=".LastChoiceHandler"
+            android:exported="false" />
+        <activity
             android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>
@@ -60,7 +97,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity> <!-- Add this service for Firebase Messaging -->
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

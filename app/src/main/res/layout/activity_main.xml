@@ -1,76 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <RelativeLayout
+    <!-- Main content layout -->
+
+    <!-- Navigation view should be placed at the end -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <!-- Your existing layout elements -->
-
-        <LinearLayout
+        <include
+            android:id="@+id/header_layout"
+            layout="@layout/header_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:background="?attr/colorPrimaryDark"
-            android:id="@+id/top_bar">
+            android:layout_height="wrap_content" />
 
-            <ImageButton
-                android:id="@+id/dropdown_menu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_menu" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Career Guru.AI"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <!-- Adding the goal text below the bar -->
-        <TextView
-            android:id="@+id/goal_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/top_bar"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:text="Goal:- XYZ"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
-
-        <!-- Adding message button to the bottom right of the screen -->
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="16dp"
-            android:background="@android:color/holo_blue_light">
-
-            <ImageButton
-                android:id="@+id/message_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/baseline_message_24" />
-        </FrameLayout>
-
-
-    </RelativeLayout>
+        <include
+            android:id="@+id/main_content"
+            layout="@layout/main_content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
@@ -79,4 +36,5 @@
         android:layout_gravity="start"
         app:menu="@menu/drawer_menu"
         app:headerLayout="@layout/nav_header_main" />
+
 </androidx.drawerlayout.widget.DrawerLayout>
