@@ -98,7 +98,17 @@ public class SettingsActivity extends AppCompatActivity {
                     return true;
                 });
             }
+
+        Preference aboutPreference = findPreference("about");
+        if (aboutPreference != null) {
+            aboutPreference.setOnPreferenceClickListener(preference -> {
+                // Handle about logic here
+                // Example: show an about dialog or navigate to an AboutActivity
+                showAboutDialog();
+                return true;
+            });
         }
+    }
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -243,6 +253,14 @@ public class SettingsActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                     })
+                    .show();
+        }
+
+        private void showAboutDialog() {
+            new AlertDialog.Builder(getContext())
+                    .setTitle("About")
+                    .setMessage("CareerCrew is a career guidance app designed to help you find your dream job and achieve your career goals.")
+                    .setPositiveButton("OK", null)
                     .show();
         }
     }

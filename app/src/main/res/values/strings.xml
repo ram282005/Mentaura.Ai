@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">careercrew</string>
+    <string name="app_name">Mentaura Ai</string>
     <string name="default_web_client_id">756903487544-rlk3k563j1e4kn6vpc8k0bfrg6ssq10u.apps.googleusercontent.com</string> <!-- Replace with your actual web client ID from Firebase console -->
     <string-array name="gender_options">
         <item>Male</item>
@@ -19,6 +19,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back">Back</string>
+    <string name="back_button" />
+
+    <string name="accessibility_service_description">This service is used to prevent distractions by blocking other apps and notifications.</string>
+
 
 
 </resources>

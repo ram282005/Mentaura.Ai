@@ -43,4 +43,9 @@
             android:summary="Allow this app to collect usage data" />
     </PreferenceCategory>
 
+    <Preference
+        android:key="about"
+        android:title="About"
+        android:icon="@drawable/baseline_info_24" />
+
 </PreferenceScreen>

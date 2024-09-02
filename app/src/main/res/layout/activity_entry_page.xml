@@ -37,7 +37,7 @@
             android:layout_height="56dp"
             android:layout_marginTop="340dp"
             android:fontFamily="@font/inter"
-            android:text="CAREER GURU.AI"
+            android:text="Mentaura.AI"
             android:textColor="@color/white"
             android:textSize="45sp"
             app:layout_constraintEnd_toEndOf="parent"

@@ -21,10 +21,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:layout_toEndOf="@+id/menu_icon"
-        android:text="Hi, User name!"
+        android:layout_toEndOf="@id/menu_icon"
+        android:text="Hi, User!"
         android:textColor="@android:color/black"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"/>
 
@@ -32,33 +32,27 @@
         android:id="@+id/user_goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/menu_icon"
+        android:layout_alignTop="@id/menu_icon"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="58dp"
         android:layout_marginEnd="16dp"
         android:autoSizeMaxTextSize="12sp"
-        android:text="Prefered:- "
+        android:text="Preferred Role: "
         android:textColor="@android:color/black"
-        android:textSize="24sp" />
+        android:textSize="18sp" />
 
-    <ImageView
-        android:id="@+id/profile_picture"
-        android:layout_width="88dp"
-        android:layout_height="81dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="4dp"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/img_2"
-        android:scaleType="centerCrop"
-        android:layout_alignParentTop="true"/>
+
+
+
+
 
     <ImageView
         android:id="@+id/steps_image"
         android:layout_width="244dp"
         android:layout_height="232dp"
         android:layout_marginTop="30dp"
-        android:layout_below="@+id/user_greeting"
+        android:layout_below="@id/user_greeting"
         android:layout_centerHorizontal="true"
         android:scaleType="fitXY"
         android:src="@drawable/manmainactivity"/>

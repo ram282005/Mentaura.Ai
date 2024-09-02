@@ -1,10 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CoursesActivity">
+    android:background="@color/white">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_alignParentStart="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/baseline_arrow_back_24" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/scrollView2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:text="Courses"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/black" />
+
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/back_button"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/courses_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

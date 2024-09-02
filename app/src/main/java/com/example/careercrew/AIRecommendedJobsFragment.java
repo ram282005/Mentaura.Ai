@@ -34,6 +34,12 @@ public class AIRecommendedJobsFragment extends Fragment {
     private static final String PREFS_NAME = "AppPrefs";
     private static final String CHOSEN_ROLE = "chosen_role";
 
+    private OnJobSelectedListener onJobSelectedListener;
+
+    public interface OnJobSelectedListener {
+        void onJobSelected(String selectedJob);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -105,6 +111,11 @@ public class AIRecommendedJobsFragment extends Fragment {
                             if (task.isSuccessful()) {
                                 sharedPreferences.edit().putString(CHOSEN_ROLE, selectedJob).apply();
                                 Toast.makeText(getActivity(), "Role saved successfully", Toast.LENGTH_SHORT).show();
+
+                                if (onJobSelectedListener != null) {
+                                    onJobSelectedListener.onJobSelected(selectedJob);
+                                }
+
                                 getActivity().getSupportFragmentManager().beginTransaction().remove(AIRecommendedJobsFragment.this).commit();
                             } else {
                                 Toast.makeText(getActivity(), "Failed to save role", Toast.LENGTH_SHORT).show();
@@ -116,5 +127,9 @@ public class AIRecommendedJobsFragment extends Fragment {
         } else {
             Toast.makeText(getActivity(), "Please select a job", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void setOnJobSelectedListener(OnJobSelectedListener onJobSelectedListener) {
+        this.onJobSelectedListener = onJobSelectedListener;
     }
 }

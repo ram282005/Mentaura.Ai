@@ -5,6 +5,102 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SubscriptionsActivity">
+    tools:context=".SubscriptionsActivity"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Mentaura Ai Premium Features"
+        android:textSize="24sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/featureList" />
+
+    <ScrollView
+        android:id="@+id/featureList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintBottom_toTopOf="@id/paymentButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="• Personalized Expert Assistance: Gain access to AI-tuned field specialists who provide personalized guidance and support tailored to your specific career needs."
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• Dedicated Study Rooms: Join specialized study rooms where community members from your domain collaborate, discuss, and work on daily assessments in real-time."
+                android:padding="8dp"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• Job applications: Every user can have the Access to explore and apply for Job Applications via Job community and Job portal whereas the Premium users are guided By AI, where the user get suggestions to apply for the jobs regarding their skill sets criteria and help in improvising their skill sets"
+                android:padding="8dp"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• Cross-Community Access: Enjoy the flexibility to join multiple communities across different domains, a feature exclusively available to premium members."
+                android:padding="8dp"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• Voice Calls: Connect with other users through voice calls with mutual consent, enhancing networking and collaboration opportunities."
+                android:padding="8dp"
+                android:textSize="16sp" />
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• Ad-Free Experience: Enjoy an uninterrupted experience with the removal of Google ads, allowing you to focus solely on your career growth."
+                android:padding="8dp"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• Individual Doubt Sessions with AI: Schedule one-on-one doubt clearing sessions with our AI, providing you with targeted assistance and personalized learning support."
+                android:padding="8dp"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/paymentButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Proceed to Payment"
+        android:textSize="18sp"
+        android:background="@drawable/rounded_button"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:onClick="onPaymentButtonClick"
+        android:padding="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

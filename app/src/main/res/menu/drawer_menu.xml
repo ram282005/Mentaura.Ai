@@ -7,42 +7,26 @@
         android:id="@+id/nav_profile"
         android:title="Profile"
         android:icon="@drawable/baseline_account_circle_24" />
-
     <item
-        android:id="@+id/writetous"
-        android:title="Write to us "
-        android:icon="@drawable/baseline_email_24"/>
-
-
+        android:id="@+id/antidistraction"
+        android:title="Anti Distraction"
+        android:icon="@drawable/baseline_do_not_disturb_on_total_silence_24"/>
     <item
         android:id="@+id/nav_help"
         android:title="Help"
         android:icon="@drawable/baseline_help_24" />
-    <item
-        android:id="@+id/nav_about"
-        android:title="About"
-        android:icon="@drawable/baseline_info_24" />
 
     <item
         android:id="@+id/shareus"
         android:title="Share us"
         android:icon="@drawable/baseline_share_24"/>
-
-    <item
-        android:id="@+id/rateus"
-        android:title="Rate Us"
-        android:icon="@drawable/baseline_star_rate_24"/>
-
     <item
         android:id="@+id/nav_settings"
         android:title="Settings"
         android:icon="@drawable/baseline_settings_24" />
+
     <item
         android:id="@+id/nav_sign_out"
         android:title="Sign Out"
         android:icon="@drawable/baseline_logout_24" />
-
-
-
-
 </menu>

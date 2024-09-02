@@ -45,6 +45,8 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.firebase.storage)
+    implementation(libs.volley)
+    implementation(libs.firebase.crashlytics.buildtools)
     testImplementation(libs.junit)
     implementation(libs.picasso)
     implementation(libs.circleImageView)
@@ -58,6 +60,9 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.play.services.auth)
     implementation(libs.firebase.messaging)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp.logging.interceptor)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }

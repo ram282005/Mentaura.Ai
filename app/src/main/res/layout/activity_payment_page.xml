@@ -41,21 +41,9 @@
             android:layout_marginStart="23dp"
             android:layout_marginTop="40dp"
             android:fontFamily="@font/inika"
-            android:text="Model:"
+            android:text="Model: Premium"
             android:textColor="@color/black"
             android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView" />
-
-        <Spinner
-            android:id="@+id/modelSpinner"
-            android:layout_width="135dp"
-            android:layout_height="31dp"
-            android:layout_marginStart="110dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/rounded_button1"
-            android:paddingLeft="10dp"
-            android:spinnerMode="dropdown"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView" />
 
@@ -70,7 +58,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/modelSpinner" />
+            app:layout_constraintTop_toBottomOf="@id/textView1" />
 
         <Spinner
             android:id="@+id/monthSpinner"
@@ -82,7 +70,7 @@
             android:paddingLeft="10dp"
             android:spinnerMode="dropdown"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/modelSpinner" />
+            app:layout_constraintTop_toBottomOf="@id/textView1" />
 
         <TextView
             android:id="@+id/totalCostTextView"

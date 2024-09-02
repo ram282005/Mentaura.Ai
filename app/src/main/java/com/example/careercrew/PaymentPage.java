@@ -24,7 +24,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class PaymentPage extends AppCompatActivity {
 
-    private Spinner modelSpinner;
     private Spinner monthSpinner;
     private TextView totalCostTextView;
     private TextView costWithTaxesTextView;
@@ -32,8 +31,7 @@ public class PaymentPage extends AppCompatActivity {
     private ProgressBar progressBar;
     private ImageView imageViewBack;
 
-    private final int premiumCost = 699;
-    private final int ultraPremiumCost = 999;
+    private final int premiumCost = 399;
     private final double gstRate = 0.18; // 18% GST
 
     private DatabaseReference databaseReference;
@@ -55,7 +53,6 @@ public class PaymentPage extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
 
-        modelSpinner = findViewById(R.id.modelSpinner);
         monthSpinner = findViewById(R.id.monthSpinner);
         totalCostTextView = findViewById(R.id.totalCostTextView);
         costWithTaxesTextView = findViewById(R.id.costWithTaxesTextView);
@@ -63,26 +60,10 @@ public class PaymentPage extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         imageViewBack = findViewById(R.id.imageView);
 
-        ArrayAdapter<CharSequence> modelAdapter = ArrayAdapter.createFromResource(this,
-                R.array.model_options, android.R.layout.simple_spinner_item);
-        modelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        modelSpinner.setAdapter(modelAdapter);
-
         ArrayAdapter<CharSequence> monthAdapter = ArrayAdapter.createFromResource(this,
                 R.array.month_options, android.R.layout.simple_spinner_item);
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         monthSpinner.setAdapter(monthAdapter);
-
-        modelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                calculateTotalCost();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
 
         monthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -111,17 +92,8 @@ public class PaymentPage extends AppCompatActivity {
     }
 
     private void calculateTotalCost() {
-        String selectedModel = modelSpinner.getSelectedItem().toString();
         int selectedMonths = Integer.parseInt(monthSpinner.getSelectedItem().toString());
-
-        int baseCost;
-        if (selectedModel.equals("Premium")) {
-            baseCost = premiumCost;
-        } else {
-            baseCost = ultraPremiumCost;
-        }
-
-        int totalCost = baseCost * selectedMonths;
+        int totalCost = premiumCost * selectedMonths;
         double totalCostWithGST = totalCost + (totalCost * gstRate);
 
         totalCostTextView.setText("Total Cost: " + totalCost);
@@ -129,12 +101,7 @@ public class PaymentPage extends AppCompatActivity {
     }
 
     private void saveSubscriptionDetails() {
-        String selectedModel = modelSpinner.getSelectedItem().toString();
         int selectedMonths = Integer.parseInt(monthSpinner.getSelectedItem().toString());
-
-        boolean isPremium = selectedModel.equals("Premium");
-
-        // Show dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(PaymentPage.this);
         builder.setTitle("Updating Subscription Details");
         builder.setMessage("Please wait...");
@@ -146,7 +113,7 @@ public class PaymentPage extends AppCompatActivity {
         // Save to Firebase
         if (currentUser != null) {
             String email = currentUser.getEmail().replace(".", ",");
-            Subscription subscription = new Subscription(selectedModel, selectedMonths, isPremium);
+            Subscription subscription = new Subscription("Premium", selectedMonths, true);
             databaseReference.child(email).setValue(subscription).addOnCompleteListener(task -> {
                 dialog.dismiss();
                 if (task.isSuccessful()) {

@@ -132,7 +132,7 @@ public class DreamRole extends AppCompatActivity {
         showProgressBar();
         mDatabase.child("users").child(emailKey).child("dreamRole").setValue(dreamRole);
         mDatabase.child("users").child(emailKey).child("dreamCompany").setValue(dreamCompany);
-        mDatabase.child("users").child(emailKey).child("lastActivity").setValue("CourseRecommendationActivity")
+        mDatabase.child("users").child(emailKey).child("lastActivity").setValue("MainActivity")
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         triggerHyperleapPrompt();
@@ -203,7 +203,7 @@ public class DreamRole extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            navigateToCourseRecommendation();
+                            navigateToMainactivity();
                         } else {
                             showMessageDialog("Please go to our website to write the exam at your suitable and wanted time.", false);
                         }
@@ -227,8 +227,8 @@ public class DreamRole extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void navigateToCourseRecommendation() {
-        Intent intent = new Intent(DreamRole.this, CourseRecommendationActivity.class);
+    private void navigateToMainactivity() {
+        Intent intent = new Intent(DreamRole.this, MainActivity.class);
         intent.putExtra("DREAM_ROLE", etDreamRole.getText().toString().trim());
         intent.putExtra("DREAM_COMPANY", etDreamCompany.getText().toString().trim());
         startActivity(intent);

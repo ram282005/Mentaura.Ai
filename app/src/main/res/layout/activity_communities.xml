@@ -1,11 +1,14 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TabHost
         android:id="@+id/tabhost"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,43 +23,57 @@
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_height="match_parent">
 
-                <!-- Community Ranks -->
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/tab1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#ACE7FF">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/community_rank_1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="16dp"
-                        android:text="#1"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                    <ListView
+                        android:id="@+id/community_ranks_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
 
-                </RelativeLayout>
-
-                <!-- Individual Ranks -->
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/tab2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#ACE7FF">
+                    android:orientation="vertical">
 
                     <ListView
                         android:id="@+id/individual_ranks_list"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="16dp" />
+                        android:layout_height="match_parent" />
+                </LinearLayout>
 
-                </RelativeLayout>
             </FrameLayout>
         </LinearLayout>
     </TabHost>
-</RelativeLayout>
+
+    <!-- Buttons at the bottom for actions -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="8dp">
+
+        <Button
+            android:id="@+id/button_doubts"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="DOUBTS"
+            android:backgroundTint="@color/colorPrimary" />
+
+        <Button
+            android:id="@+id/button_weekly_assignment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Daily Assignment"
+            android:backgroundTint="@color/white" />
+    </LinearLayout>
+</LinearLayout>

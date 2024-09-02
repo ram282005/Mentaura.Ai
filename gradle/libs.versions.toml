@@ -1,11 +1,11 @@
 [versions]
-agp = "8.3.2"
+agp = "8.5.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
 material = "1.12.0"
-activity = "1.9.0"
+activity = "1.9.1"
 constraintlayout = "2.1.4"
 googleServices = "4.4.2"
 firebaseAuth = "23.0.0"
@@ -20,12 +20,18 @@ gson = "2.10.1"
 okhttp = "4.12.0"
 navigationFragment = "2.7.7"
 navigationUi = "2.7.7"
-fragment = "1.8.1"
+fragment = "1.8.2"
 firebaseStorage = "21.0.0"
-firebaseMessaging = "23.0.0"  # Add this line
+firebaseMessaging = "24.0.0"  # Add this line
 picasso = "2.71828"
 circleImageView = "3.1.0"
-preference = "1.2.0"
+preference = "1.2.1"
+retrofit = "2.9.0"
+retrofitConverterGson = "2.9.0"
+okhttpLoggingInterceptor = "5.0.0-alpha.3"
+volley = "1.2.1"
+firebaseCrashlyticsBuildtools = "3.0.2"
+
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -53,6 +59,11 @@ firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging
 picasso = { group = "com.squareup.picasso", name = "picasso", version.ref = "picasso" }
 circleImageView = { group = "de.hdodenhof", name = "circleimageview", version.ref = "circleImageView" }
 preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }  # Add this line
+retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofitConverterGson" }  # Add this line
+okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttpLoggingInterceptor" }
+volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
+firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }  # Add this line
 
 
 [plugins]

@@ -20,7 +20,26 @@
         <RadioGroup
             android:id="@+id/radio_group"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/job1RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Job 1" />
+
+            <RadioButton
+                android:id="@+id/job2RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Job 2" />
+
+            <RadioButton
+                android:id="@+id/job3RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Job 3" />
+        </RadioGroup>
 
         <Button
             android:id="@+id/submit_button"

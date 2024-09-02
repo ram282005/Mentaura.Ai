@@ -39,6 +39,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 
@@ -55,9 +57,9 @@ public class CareerPath extends AppCompatActivity {
     private RelativeLayout bottomLayout;
     private LinearLayout chatLayout;
 
-    private static final String PERSONA_ID = "7c6a98ff-a3bd-4ce7-b497-55957d6a21e2";
-    private static final String CONVERSATION_ID = "35dd5776-ab87-4664-be73-9be637bec6ab";
-    private static final String API_KEY = "YzhlMGM1MzAyY2YwNDU3MDk2NmRiNDI0OWM5MTI4NTE=";
+    private static final String PERSONA_ID = "ab9935d7-07d0-4500-8bfc-ee5efeac216f";
+    private static final String CONVERSATION_ID = "b276ad63-9356-4c36-9a60-29ecb0cc4414";
+    private static final String API_KEY = "YTE0M2JhN2FlNjFmNDNlNzhjM2UwZTBkNTg3ZjY1MmE=";
     private static final String PREFS_NAME = "ChatPrefs";
     private static final String PREFS_KEY = "ChatMessages";
 
@@ -124,9 +126,6 @@ public class CareerPath extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
-
-
 
 
     private void showLoadingDialog() {
@@ -316,15 +315,12 @@ public class CareerPath extends AppCompatActivity {
             messageAdapter.notifyItemInserted(messageList.size() - 1);
             recyclerView.scrollToPosition(messageList.size() - 1);
 
-            // Save messages to shared preferences
             saveChats();
 
-            // Check if the response contains the specific message to navigate to the subscription page
             if (assistantMessage.contains("feel free to ask")) {
                 promptUserWithDialog();
             }
 
-            // Extract and save job recommendations
             saveJobRecommendations(assistantMessage);
         }
 
@@ -356,99 +352,80 @@ public class CareerPath extends AppCompatActivity {
             builder.setNegativeButton("Wait!", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    // Optionally do nothing
+
                 }
             });
             builder.show();
         }
 
 
-
         private void saveJobRecommendations(String assistantMessage) {
             Log.d("CareerPath", "saveJobRecommendations called with message: " + assistantMessage);
 
-            String triggerPhrase = "Thank you for your answer. Based on your responses, here are three career options that may be suitable for you:";
-            if (assistantMessage.contains(triggerPhrase)) {
-                Log.d("CareerPath", "Assistant message contains the expected career options text.");
-                String[] parts = assistantMessage.split(triggerPhrase);
+            String triggerPattern = "Thank you for your (.*?)\\. Based on your (.*?), here are six career options that may be suitable for you:(.*)";
+            Pattern pattern = Pattern.compile(triggerPattern, Pattern.DOTALL);
+            Matcher matcher = pattern.matcher(assistantMessage);
 
-                if (parts.length > 1) {
-                    String recommendations = parts[1].trim();
-                    String[] jobs = recommendations.split("\\d+\\. ");
+            if (matcher.find()) {
+                String recommendations = matcher.group(3).trim();
+                String[] jobs = recommendations.split("\\d+\\. ");
 
-                    Log.d("CareerPath", "Recommendations: " + recommendations);
-                    Log.d("CareerPath", "Job Parts: " + Arrays.toString(jobs));
+                Log.d("CareerPath", "Recommendations: " + recommendations);
+                Log.d("CareerPath", "Job Parts: " + Arrays.toString(jobs));
 
-                    if (jobs.length >= 4) {
-                        String job1 = jobs[1].split(":")[0].trim();
-                        String job2 = jobs[2].split(":")[0].trim();
-                        String job3 = jobs[3].split(":")[0].trim();
-
-                        Log.d("CareerPath", "Job 1: " + job1);
-                        Log.d("CareerPath", "Job 2: " + job2);
-                        Log.d("CareerPath", "Job 3: " + job3);
-
-                        String email = mAuth.getCurrentUser().getEmail();
-                        if (email != null) {
-                            String emailKey = email.replace(".", ",");
-
-                            Log.d("CareerPath", "User Email: " + email);
-                            Log.d("CareerPath", "User Email Key: " + emailKey);
-
-                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(emailKey);
-
-                            userRef.child("aijobrecommended1").setValue(job1)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("CareerPath", "Job 1 saved successfully.");
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.e("CareerPath", "Failed to save Job 1: " + e.getMessage());
-                                        }
-                                    });
-
-                            userRef.child("aijobrecommended2").setValue(job2)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("CareerPath", "Job 2 saved successfully.");
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.e("CareerPath", "Failed to save Job 2: " + e.getMessage());
-                                        }
-                                    });
-
-                            userRef.child("aijobrecommended3").setValue(job3)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("CareerPath", "Job 3 saved successfully.");
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.e("CareerPath", "Failed to save Job 3: " + e.getMessage());
-                                        }
-                                    });
-                        } else {
-                            Log.e("CareerPath", "Failed to get user email.");
-                        }
-                    } else {
-                        Log.e("CareerPath", "Failed to parse job recommendations. Job parts length: " + jobs.length);
+                // Remove any empty strings from the jobs array
+                List<String> jobList = new ArrayList<>();
+                for (String job : jobs) {
+                    if (!job.trim().isEmpty()) {
+                        jobList.add(job.split(":")[0].trim());
                     }
+                }
+
+                Log.d("CareerPath", "Filtered Jobs: " + jobList);
+
+                // Call saveJobsToDatabase with the appropriate number of job recommendations
+                if (jobList.size() > 0) {
+                    saveJobsToDatabase(jobList);
                 } else {
-                    Log.e("CareerPath", "Failed to split assistant message into parts.");
+                    Log.e("CareerPath", "Failed to parse job recommendations. Job parts length: " + jobList.size());
                 }
             } else {
-                Log.e("CareerPath", "Assistant message does not contain the expected career options text.");
+                Log.e("CareerPath", "Assistant message does not match the expected pattern.");
+            }
+        }
+
+
+        private void saveJobsToDatabase(List<String> jobList) {
+            String email = mAuth.getCurrentUser().getEmail();
+            if (email != null) {
+                String emailKey = email.replace(".", ",");
+
+                Log.d("CareerPath", "User Email: " + email);
+                Log.d("CareerPath", "User Email Key: " + emailKey);
+
+                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(emailKey);
+
+                // Iterate through the job list and save each job to the database
+                for (int i = 0; i < jobList.size(); i++) {
+                    String jobKey = "aijobrecommended" + (i + 1);
+                    String job = jobList.get(i);
+
+                    userRef.child(jobKey).setValue(job)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d("CareerPath", jobKey + " saved successfully.");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e("CareerPath", "Failed to save " + jobKey + ": " + e.getMessage());
+                                }
+                            });
+                }
+            } else {
+                Log.e("CareerPath", "Failed to get user email.");
             }
         }
     }

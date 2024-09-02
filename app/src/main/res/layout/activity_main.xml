@@ -8,9 +8,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- Main content layout -->
-
-    <!-- Navigation view should be placed at the end -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,7 +31,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/drawer_menu"
-        app:headerLayout="@layout/nav_header_main" />
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_main"
+        app:menu="@menu/drawer_menu" />
+
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/img_6" />
+        android:src="@drawable/img_13" />
 
     <TextView
         android:layout_width="0dp"
