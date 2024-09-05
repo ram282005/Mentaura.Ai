@@ -26,12 +26,14 @@ public class Register extends AppCompatActivity {
 
     private EditText editTextAge, editTextCareerFocus;
     private Spinner spinnerGender;
+    private Spinner spinnerSkills;  // Spinner for skills
     private Button buttonRegister;
     private ImageView imageViewBack;
     private FirebaseAuth mAuth;
     private DatabaseReference dbRef;
     private String nextActivityClass;  // To hold the next activity class
     private String selectedGender;  // To hold the selected gender
+    private String selectedSkill;  // To hold the selected skill
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,17 +46,18 @@ public class Register extends AppCompatActivity {
         editTextAge = findViewById(R.id.editTextText);
         spinnerGender = findViewById(R.id.spinnerGender);
         editTextCareerFocus = findViewById(R.id.editTextText2);
+        spinnerSkills = findViewById(R.id.spinnerSkills);  // Find spinnerSkills
         buttonRegister = findViewById(R.id.button);
         imageViewBack = findViewById(R.id.imageView);  // Find the ImageView
 
         // Get the next activity class from the intent extras
         nextActivityClass = getIntent().getStringExtra("nextActivityClass");
 
-        // Set up the Spinner
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        // Set up the Spinner for gender
+        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this,
                 R.array.gender_options, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerGender.setAdapter(adapter);
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerGender.setAdapter(genderAdapter);
 
         spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -65,6 +68,24 @@ public class Register extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 selectedGender = null;
+            }
+        });
+
+        // Set up the Spinner for skills
+        ArrayAdapter<CharSequence> skillsAdapter = ArrayAdapter.createFromResource(this,
+                R.array.skills_options, android.R.layout.simple_spinner_item);  // Assuming the array is defined in res/values/strings.xml
+        skillsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSkills.setAdapter(skillsAdapter);
+
+        spinnerSkills.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedSkill = (String) parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedSkill = null;
             }
         });
 
@@ -87,7 +108,7 @@ public class Register extends AppCompatActivity {
         final String age = editTextAge.getText().toString().trim();
         final String careerFocus = editTextCareerFocus.getText().toString().trim();
 
-        if (age.isEmpty() || selectedGender == null || selectedGender.isEmpty() || careerFocus.isEmpty()) {
+        if (age.isEmpty() || selectedGender == null || selectedGender.isEmpty() || careerFocus.isEmpty() || selectedSkill == null || selectedSkill.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -102,6 +123,7 @@ public class Register extends AppCompatActivity {
                 dbRef.child("users").child(emailKey).child("age").setValue(age);
                 dbRef.child("users").child(emailKey).child("gender").setValue(selectedGender);
                 dbRef.child("users").child(emailKey).child("careerFocus").setValue(careerFocus);
+                dbRef.child("users").child(emailKey).child("skills").setValue(selectedSkill);  // Save selected skill
 
                 // Registration successful, check for last choice
                 checkLastChoice(emailKey);

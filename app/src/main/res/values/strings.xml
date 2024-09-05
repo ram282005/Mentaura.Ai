@@ -6,6 +6,14 @@
         <item>Female</item>
         <item>LGBTQ+</item>
     </string-array>
+    <string-array name="skills_options">
+        <item>Realistic (R),Mechanical Skills etc..</item>
+        <item>Investic (I), Analytical Skills etc..</item>
+        <item>Artistic (A),Creative Skills etc..</item>
+        <item>Social (S), Interpersonal Skills etc..</item>
+        <item>Enterprising (E), Leadership Skills etc..</item>
+        <item>Conventional (C), Organizational Skills etc..</item>
+    </string-array>
     <string-array name="model_options">
         <item>Premium</item>
         <item>Ultra Premium</item>

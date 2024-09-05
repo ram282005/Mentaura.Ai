@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Other UI elements -->
 
         <Button
             android:id="@+id/buttonenterdetails"
@@ -62,7 +61,7 @@
             android:id="@+id/buttonDreamRole"
             android:layout_width="293dp"
             android:layout_height="93dp"
-            android:text="Attain Your Dream Role with our Assistance"
+            android:text="Work towards your Dream role "
             android:textAllCaps="false"
             android:fontFamily="@font/inika"
             android:textSize="25sp"

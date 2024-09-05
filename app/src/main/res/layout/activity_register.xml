@@ -91,6 +91,33 @@
             app:layout_constraintTop_toBottomOf="@id/editTextText"
             android:entries="@array/gender_options" />
 
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/inika"
+            android:text="Skills:"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView2" />
+
+        <Spinner
+            android:id="@+id/spinnerSkills"
+            android:layout_width="145dp"
+            android:layout_height="31dp"
+            android:layout_marginStart="110dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/rounded_button1"
+            android:paddingLeft="10dp"
+            android:spinnerMode="dropdown"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spinnerGender"
+            android:entries="@array/skills_options" />
+
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
@@ -102,7 +129,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spinnerGender" />
+            app:layout_constraintTop_toBottomOf="@id/textView4" />
 
         <EditText
             android:id="@+id/editTextText2"

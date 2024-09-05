@@ -57,8 +57,8 @@ public class CareerPath extends AppCompatActivity {
     private RelativeLayout bottomLayout;
     private LinearLayout chatLayout;
 
-    private static final String PERSONA_ID = "ab9935d7-07d0-4500-8bfc-ee5efeac216f";
-    private static final String CONVERSATION_ID = "b276ad63-9356-4c36-9a60-29ecb0cc4414";
+    private static final String PERSONA_ID = "2ef9447f-e4fd-46a3-9f4c-af404a9a759e";
+    private static final String CONVERSATION_ID = "bb139998-6ccc-43bc-b000-74d298c7e5f8";
     private static final String API_KEY = "YTE0M2JhN2FlNjFmNDNlNzhjM2UwZTBkNTg3ZjY1MmE=";
     private static final String PREFS_NAME = "ChatPrefs";
     private static final String PREFS_KEY = "ChatMessages";
