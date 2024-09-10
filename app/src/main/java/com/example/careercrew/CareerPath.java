@@ -262,10 +262,24 @@ public class CareerPath extends AppCompatActivity {
         }
     }
 
+    private void sendMessageToAIWithDetails(String age, String gender, String skills) {
+        String messageText = editTextCareerGoal.getText().toString().trim();
+
+        if (!messageText.isEmpty()) {
+            new SendMessageToAI().execute(messageText, age, gender, skills);  // Pass additional details
+        } else {
+            Toast.makeText(CareerPath.this, "Please enter a message", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private class SendMessageToAI extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... strings) {
             String messageText = strings[0];
+            String age = strings[1];
+            String gender = strings[2];
+            String skills = strings[3];
+
             try {
                 URL url = new URL("https://api.hyperleap.ai/conversations/" + CONVERSATION_ID + "/continue-sync");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -278,6 +292,9 @@ public class CareerPath extends AppCompatActivity {
                 JSONObject jsonInput = new JSONObject();
                 jsonInput.put("personaId", PERSONA_ID);
                 jsonInput.put("message", messageText);
+                jsonInput.put("age", age);          // Add user's age
+                jsonInput.put("gender", gender);    // Add user's gender
+                jsonInput.put("skills", skills);    // Add user's skills
 
                 try (OutputStream os = connection.getOutputStream()) {
                     byte[] input = jsonInput.toString().getBytes("utf-8");
@@ -299,7 +316,10 @@ public class CareerPath extends AppCompatActivity {
             }
         }
 
-        @Override
+
+
+
+    @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
 

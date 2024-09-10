@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.firebase.crashlytics.buildtools)
     testImplementation(libs.junit)
     implementation(libs.picasso)
+    implementation(libs.work.runtime.ktx)
     implementation(libs.circleImageView)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.database)

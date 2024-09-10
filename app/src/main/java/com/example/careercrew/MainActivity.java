@@ -299,7 +299,11 @@ public class MainActivity extends AppCompatActivity {
         } else if (itemId == R.id.nav_profile) {
             Log.d(TAG, "Navigating to Profile");
             navigateToActivity(ProfileActivity.class);
-        } else if (itemId == R.id.antidistraction) {
+        } else if (itemId == R.id.savedMessages){
+            Log.d(TAG, "Opening Saved Messages");
+            navigateToActivity(saveMessages.class);
+        }
+        else if (itemId == R.id.antidistraction) {
             Log.d(TAG, "Opening Anti Distraction Mode dialog");
             showAntiDistractionDialog();
         } else if (itemId == R.id.nav_help) {

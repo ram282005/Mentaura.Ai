@@ -11,6 +11,12 @@
         android:id="@+id/antidistraction"
         android:title="Anti Distraction"
         android:icon="@drawable/baseline_do_not_disturb_on_total_silence_24"/>
+
+    <item
+        android:id="@+id/savedMessages"
+        android:title="Saved messages"
+        android:icon="@drawable/baseline_savemessages_24"/>
+
     <item
         android:id="@+id/nav_help"
         android:title="Help"

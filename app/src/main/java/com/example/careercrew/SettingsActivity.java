@@ -1,15 +1,17 @@
 package com.example.careercrew;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -65,6 +67,8 @@ public class SettingsActivity extends AppCompatActivity {
         private DatabaseReference mDatabase;
         private SharedPreferences sharedPreferences;
 
+        private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.preferences, rootKey);
@@ -73,12 +77,11 @@ public class SettingsActivity extends AppCompatActivity {
             mDatabase = FirebaseDatabase.getInstance().getReference();
             sharedPreferences = getActivity().getSharedPreferences("settings_preferences", MODE_PRIVATE);
 
-            // Set click listeners for new preferences
+            // Set click listeners for preferences
             Preference changePasswordPreference = findPreference("change_password");
             if (changePasswordPreference != null) {
                 changePasswordPreference.setOnPreferenceClickListener(preference -> {
                     // Handle change password logic here
-                    // Example: navigate to ChangePasswordActivity
                     return true;
                 });
             }
@@ -99,29 +102,37 @@ public class SettingsActivity extends AppCompatActivity {
                 });
             }
 
-        Preference aboutPreference = findPreference("about");
-        if (aboutPreference != null) {
-            aboutPreference.setOnPreferenceClickListener(preference -> {
-                // Handle about logic here
-                // Example: show an about dialog or navigate to an AboutActivity
-                showAboutDialog();
-                return true;
-            });
+            Preference locationPreference = findPreference("request_location");
+            if (locationPreference != null) {
+                locationPreference.setOnPreferenceClickListener(preference -> {
+                    requestLocation();
+                    return true;
+                });
+            }
+
+            Preference darkModePreference = findPreference("dark_mode");
+            if (darkModePreference != null) {
+                darkModePreference.setOnPreferenceClickListener(preference -> {
+                    boolean darkModeEnabled = sharedPreferences.getBoolean("dark_mode", false);
+                    toggleDarkMode(darkModeEnabled);
+                    return true;
+                });
+            }
+
+            Preference aboutPreference = findPreference("about");
+            if (aboutPreference != null) {
+                aboutPreference.setOnPreferenceClickListener(preference -> {
+                    showAboutDialog();
+                    return true;
+                });
+            }
         }
-    }
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals("dark_mode")) {
                 boolean darkModeEnabled = sharedPreferences.getBoolean(key, false);
-                // Save the preference
-                this.sharedPreferences.edit().putBoolean("dark_mode", darkModeEnabled).apply();
-                // Handle dark mode toggle
-                if (darkModeEnabled) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                }
+                toggleDarkMode(darkModeEnabled);
             }
         }
 
@@ -135,6 +146,15 @@ public class SettingsActivity extends AppCompatActivity {
         public void onPause() {
             super.onPause();
             getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        }
+
+        private void toggleDarkMode(boolean darkModeEnabled) {
+            sharedPreferences.edit().putBoolean("dark_mode", darkModeEnabled).apply();
+            if (darkModeEnabled) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
         }
 
         private void showDeleteAccountDialog() {
@@ -157,14 +177,11 @@ public class SettingsActivity extends AppCompatActivity {
                 user.delete()
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
-                                // Account deleted successfully
-                                // Navigate to the entry page (e.g., login screen)
                                 Intent intent = new Intent(getContext(), EntryPage.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                                 getActivity().finish();
                             } else {
-                                // Deletion failed
                                 Toast.makeText(getContext(), "Account deletion failed. Please try again.", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -176,11 +193,7 @@ public class SettingsActivity extends AppCompatActivity {
             if (user != null) {
                 String email = user.getEmail();
                 if (email != null) {
-                    // Encode email for use in database reference
-                    String encodedEmail = email.replace(".", ","); // Example encoding: replace '.' with ','
-
-                    // Log the encoded email for debugging
-                    Log.d("SettingsFragment", "Encoded email: " + encodedEmail);
+                    String encodedEmail = email.replace(".", ",");
 
                     mDatabase.child("profiles").child(encodedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -190,11 +203,9 @@ public class SettingsActivity extends AppCompatActivity {
                                 if (phoneNumber != null && !phoneNumber.isEmpty()) {
                                     sendOtpToPhoneNumber(phoneNumber);
                                 } else {
-                                    // Prompt the user to complete their profile
                                     promptUserToCompleteProfile();
                                 }
                             } else {
-                                // Prompt the user to complete their profile
                                 promptUserToCompleteProfile();
                             }
                         }
@@ -214,24 +225,22 @@ public class SettingsActivity extends AppCompatActivity {
 
         private void sendOtpToPhoneNumber(String phoneNumber) {
             PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
-                    .setPhoneNumber(phoneNumber)       // Phone number to verify
-                    .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                    .setActivity(getActivity())       // Activity (for callback binding)
+                    .setPhoneNumber(phoneNumber)
+                    .setTimeout(60L, TimeUnit.SECONDS)
+                    .setActivity(getActivity())
                     .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                         @Override
                         public void onVerificationCompleted(PhoneAuthCredential credential) {
-                            // Auto-retrieval or instant verification has succeeded
+                            // Auto-verification succeeded
                         }
 
                         @Override
                         public void onVerificationFailed(FirebaseException e) {
-                            // Verification failed
                             Toast.makeText(getContext(), "Verification failed. Please try again.", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
-                            // Code has been sent to the phone number, now navigate to OTP verification screen
                             Intent intent = new Intent(getContext(), VerifyOtpActivity.class);
                             intent.putExtra("verificationId", verificationId);
                             startActivity(intent);
@@ -241,25 +250,36 @@ public class SettingsActivity extends AppCompatActivity {
             PhoneAuthProvider.verifyPhoneNumber(options);
         }
 
+        private void requestLocation() {
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+            } else {
+                // Handle location logic
+                Toast.makeText(getContext(), "Location access granted", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+            if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission granted
+                    Toast.makeText(getContext(), "Location permission granted", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Permission denied
+                    Toast.makeText(getContext(), "Location permission denied", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
         private void promptUserToCompleteProfile() {
-            new AlertDialog.Builder(getContext())
-                    .setTitle("Complete Profile")
-                    .setMessage("Please complete your profile by adding a phone number before verifying.")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Navigate to the profile page
-                            Intent intent = new Intent(getContext(), ProfileActivity.class);
-                            startActivity(intent);
-                        }
-                    })
-                    .show();
+            Toast.makeText(getContext(), "Please update your profile with a valid phone number.", Toast.LENGTH_LONG).show();
         }
 
         private void showAboutDialog() {
             new AlertDialog.Builder(getContext())
-                    .setTitle("About")
-                    .setMessage("CareerCrew is a career guidance app designed to help you find your dream job and achieve your career goals.")
+                    .setTitle("About CareerCrew")
+                    .setMessage("Mentaura AI is your companion for finding the right career path, preparing for job roles, and staying focused!")
                     .setPositiveButton("OK", null)
                     .show();
         }
