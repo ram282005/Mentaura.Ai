@@ -1,0 +1,22 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Gradient border -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="19dp" />
+            <gradient
+                android:startColor="#999999"
+                android:endColor="#000000"
+                android:angle="0"/>
+        </shape>
+    </item>
+
+    <!-- Inset for the inner shape -->
+    <item android:left="1dp" android:right="1dp" android:top="1dp" android:bottom="1dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="19dp" />
+            <solid android:color="@color/darkblue" />
+        </shape>
+    </item>
+
+</layer-list>
