@@ -1,11 +1,36 @@
 <resources>
     <string name="app_name">Mentaura Ai</string>
     <string name="default_web_client_id">756903487544-rlk3k563j1e4kn6vpc8k0bfrg6ssq10u.apps.googleusercontent.com</string> <!-- Replace with your actual web client ID from Firebase console -->
+
     <string-array name="gender_options">
+        <item>Select Gender</item>
         <item>Male</item>
         <item>Female</item>
-        <item>LGBTQ+</item>
+        <item>Other</item>
     </string-array>
+
+    <string-array name="edu_options">
+        <item>Select your education</item>
+        <item>School or Intermediate</item>
+        <item>University_UG</item>
+    </string-array>
+
+    <string-array name="board_options">
+        <item>Select your Board</item>
+        <item>SSC</item>
+        <item>CBSC</item>
+        <item>ICSC</item>
+    </string-array>
+
+    <string-array name="subject_options">
+        <item>Select your favourite subject</item>
+        <item>Maths</item>
+        <item>Physics</item>
+        <item>Chemistry</item>
+        <item>Biology</item>
+        <item>Social</item>
+    </string-array>
+
     <string-array name="skills_options">
         <item>Realistic (R),Mechanical Skills etc..</item>
         <item>Investic (I), Analytical Skills etc..</item>
@@ -14,16 +39,19 @@
         <item>Enterprising (E), Leadership Skills etc..</item>
         <item>Conventional (C), Organizational Skills etc..</item>
     </string-array>
+
     <string-array name="model_options">
         <item>Premium</item>
         <item>Ultra Premium</item>
     </string-array>
+
     <string-array name="month_options">
         <item>1</item>
         <item>3</item>
         <item>6</item>
         <item>12</item>
     </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back">Back</string>

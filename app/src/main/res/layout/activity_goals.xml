@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,95 +5,72 @@
     android:layout_height="match_parent"
     tools:context=".GoalsActivity">
 
-    <ImageButton
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:src="@color/lightblue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/goals_backButton"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:src="@drawable/baseline_arrow_back_24"
-        android:layout_gravity="start"
-        tools:ignore="MissingConstraints" />
+        app:tint="@color/darkblue"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/title_goals"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="168dp"
-        android:layout_marginTop="16dp"
         android:text="GOALS"
+        android:fontFamily="@font/roboto_bold"
         android:textSize="34sp"
+        android:textColor="@color/darkblue"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+    <TextView
+        android:id="@+id/preferred_careerpath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Preferred Career Path"
+        android:fontFamily="@font/roboto"
+        android:textColor="@color/darkblue"
+        android:textSize="26sp"
+        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/title_goals"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="32dp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:gravity="center_horizontal">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/roadmap_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/preferred_careerpath"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/weekly_goals_recycler_view"
+        android:background="@drawable/bubble_bot"
+        android:layout_margin="16dp" />
 
-            <TextView
-                android:id="@+id/preferred_careerpath_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Preferred Careerpath:"
-                android:textSize="24sp" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/weekly_goals_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/roadmap_recycler_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp"
+        android:background="@drawable/bubble_bot"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-            <TextView
-                android:id="@+id/preferred_careerpath"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textSize="23sp" />
-
-            <TextView
-                android:id="@+id/roadmap_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Road map:"
-                android:textSize="26sp"
-                android:layout_marginTop="26dp" />
-
-            <TextView
-                android:id="@+id/roadmap_content"
-                android:layout_width="334dp"
-                android:layout_height="427dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/bubble_bot"
-                android:padding="18dp"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/weekly_goals_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Weekly Goals:"
-                android:textSize="23sp"
-                android:layout_marginTop="16dp" />
-
-            <TextView
-                android:id="@+id/weekly_goals_content"
-                android:layout_width="318dp"
-                android:layout_height="506dp"
-                android:background="@drawable/bubble_bot"
-                android:padding="8dp"
-                android:textSize="18sp"
-                android:layout_gravity="center_horizontal" />
-
-            <TextView
-                android:id="@+id/another_box"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:textSize="18sp"
-                android:layout_gravity="center_horizontal" />
-        </LinearLayout>
-    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

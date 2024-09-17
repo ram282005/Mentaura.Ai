@@ -10,6 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,9 +28,11 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -54,8 +60,8 @@ public class ChatActivity extends AppCompatActivity {
     // Hyperleap API constants
     private static final String API_URL = "https://api.hyperleap.ai/conversations/";
     private static final String API_KEY = "YTE0M2JhN2FlNjFmNDNlNzhjM2UwZTBkNTg3ZjY1MmE="; // Replace with your Hyperleap API Key
-    private static final String CONVERSATION_ID = "f877a490-2d6c-49ef-8d26-d7ee1d111229"; // Replace with the actual conversation ID
-    private static final String PERSONA_ID = "615328a9-d39a-4cd5-9440-c488110eac71"; // Replace with the persona ID
+    private static final String CONVERSATION_ID = "7bcf7e1d-2cd9-4c8e-aa5f-408cc6de3d76"; // Replace with the actual conversation ID
+    private static final String PERSONA_ID = "3d7cab73-cf2c-4595-8638-e6c380fa2847"; // Replace with the persona ID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +117,7 @@ public class ChatActivity extends AppCompatActivity {
                         // If a role is found, load existing tips and fetch new ones
                         if (chosenRole != null) {
                             loadExistingTipsAndFetchNew(chosenRole); // Load existing tips first
+                            onRoleFetched(chosenRole);  // Schedule the daily work
                         }
                     } else {
                         Log.e("Firebase", "User does not have role or community data.");
@@ -139,8 +146,8 @@ public class ChatActivity extends AppCompatActivity {
                         storedTipsSet.add(tip); // Add existing tips to the set
                     }
                 }
-                // After loading, fetch new tips
-                fetchPersonalizedTips(role);
+                // After loading, fetch new tips and ensure the correct starting index is passed
+                fetchPersonalizedTips(role, 0);  // Start with index 0
             }
 
             @Override
@@ -151,8 +158,19 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     // Fetch new tips from Hyperleap AI API based on the user's role, ensuring no duplicates
-    private void fetchPersonalizedTips(String role) {
-        String message = "Provide career tips for someone aspiring to be a " + role;
+    private void fetchPersonalizedTips(String role, int messageIndex) {
+        String[] messages = {
+                "Provide career tips for someone aspiring to be a " + role,
+                "Provide motivation for someone aspiring to be a " + role,
+                "Provide latest updates for someone aspiring to be a " + role
+        };
+
+        if (messageIndex >= messages.length) {
+            // Stop when all messages have been sent
+            return;
+        }
+
+        String message = messages[messageIndex];
 
         try {
             JSONObject jsonBody = new JSONObject();
@@ -185,12 +203,14 @@ public class ChatActivity extends AppCompatActivity {
 
                             // Check if the tip is a duplicate
                             if (!storedTipsSet.contains(tip)) {
-                                addToChat("Tip for " + role + ": " + tip, Message1.SENT_BY_BOT);  // Display the AI tip
+                                addToChat("The role  " + role + ": " + tip, Message1.SENT_BY_BOT);  // Display the AI tip
                                 saveTipToFirebase(role, tip);  // Save the new tip
                             } else {
                                 addToChat("Received a duplicate tip. Requesting a new one...", Message1.SENT_BY_BOT);
-                                fetchPersonalizedTips(role);  // Request a new tip
                             }
+
+                            // Proceed to the next message after processing the current one
+                            fetchPersonalizedTips(role, messageIndex + 1);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -219,26 +239,58 @@ public class ChatActivity extends AppCompatActivity {
         return "No reply found in the response.";
     }
 
-    // Save the AI-generated career tip to Firebase under the user's node
+    // Save the new tip to Firebase to avoid duplicates
     private void saveTipToFirebase(String role, String tip) {
-        DatabaseReference userTipsRef = mDatabase.child("users").child(userEmailKey).child("career_tips");
-        userTipsRef.push().setValue(tip) // Use push() to ensure uniqueness in the database
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        storedTipsSet.add(tip); // Add the new tip to the stored tips set
-                        Log.d("Firebase", "Career tip successfully saved to Firebase.");
-                    } else {
-                        Log.e("Firebase", "Failed to save career tip: " + task.getException());
-                    }
-                });
+        DatabaseReference userTipsRef = mDatabase.child("users").child(userEmailKey).child("career_tips").push();
+        userTipsRef.setValue(tip);
+        storedTipsSet.add(tip); // Add the tip to the set
     }
 
-    // Helper function to add messages to the chat and update UI
-    void addToChat(String message, String sentBy) {
+    // Add message to chat recycler view
+    private void addToChat(String message, String sentBy) {
         runOnUiThread(() -> {
             messageList1.add(new Message1(message, sentBy));
             messageAdapter1.notifyDataSetChanged();
-            recyclerView.smoothScrollToPosition(messageAdapter1.getItemCount());  // Automatically scroll to the bottom
+            recyclerView.smoothScrollToPosition(messageAdapter1.getItemCount() - 1);
         });
+    }
+
+    // Schedule daily work at specific times (9 AM, 2 PM, 8 PM)
+    private void scheduleWork(String role) {
+        Data morningData = new Data.Builder().putString("role", role).putInt("messageIndex", 0).build();
+        Data afternoonData = new Data.Builder().putString("role", role).putInt("messageIndex", 1).build();
+        Data eveningData = new Data.Builder().putString("role", role).putInt("messageIndex", 2).build();
+
+        // Schedule the work requests for the morning (9-10 AM), afternoon (2-3 PM), and evening (8-9 PM)
+        scheduleDailyWork(morningData, 9);
+        scheduleDailyWork(afternoonData, 14);
+        scheduleDailyWork(eveningData, 20);
+    }
+
+    // Schedule a daily work at a specific hour
+    private void scheduleDailyWork(Data data, int hour) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        long delay = calendar.getTimeInMillis() - System.currentTimeMillis();
+        if (delay < 0) {
+            // If the time has already passed for today, schedule for tomorrow
+            delay += TimeUnit.DAYS.toMillis(1);
+        }
+
+        // Schedule the work with the calculated delay
+        WorkRequest dailyWork = new OneTimeWorkRequest.Builder(SendTipsWorker.class)
+                .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+                .setInputData(data)
+                .build();
+
+        WorkManager.getInstance(this).enqueue(dailyWork);
+    }
+
+    // Call this method after fetching the role to schedule the work
+    private void onRoleFetched(String role) {
+        scheduleWork(role);
     }
 }

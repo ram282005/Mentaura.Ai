@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#64B7C9"
+    android:fillViewport="true"
+    android:background="@color/lightblue"
     tools:context=".Register">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,180 +13,352 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/first_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/register_2"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/back1" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:fontFamily="@font/irish_grover"
-            android:text="Register"
-            android:textColor="@color/black"
-            android:textSize="50sp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="40dp"
-            android:fontFamily="@font/inika"
-            android:text="Age:"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView" />
-
-        <EditText
-            android:id="@+id/editTextText"
-            android:layout_width="135dp"
-            android:layout_height="31dp"
-            android:layout_marginStart="110dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/rounded_button1"
-            android:ems="10"
-            android:fontFamily="@font/inika"
-            android:hint="Enter age"
-            android:inputType="number"
-            android:paddingLeft="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="40dp"
-            android:fontFamily="@font/inika"
-            android:text="Gender:"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/editTextText" />
-
-        <Spinner
-            android:id="@+id/spinnerGender"
-            android:layout_width="145dp"
-            android:layout_height="31dp"
-            android:layout_marginStart="110dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/rounded_button1"
-            android:paddingLeft="10dp"
-            android:spinnerMode="dropdown"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/editTextText"
-            android:entries="@array/gender_options" />
-
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="40dp"
-            android:fontFamily="@font/inika"
-            android:text="Skills:"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView2" />
-
-        <Spinner
-            android:id="@+id/spinnerSkills"
-            android:layout_width="145dp"
-            android:layout_height="31dp"
-            android:layout_marginStart="110dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/rounded_button1"
-            android:paddingLeft="10dp"
-            android:spinnerMode="dropdown"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spinnerGender"
-            android:entries="@array/skills_options" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="40dp"
-            android:fontFamily="@font/inika"
-            android:text="Career Focuses:"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView4" />
-
-        <EditText
-            android:id="@+id/editTextText2"
-            android:layout_width="363dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_button1"
-            android:ems="10"
-            android:fontFamily="@font/inika"
-            android:gravity="center"
-            android:hint="Provide a description of your career"
-            android:inputType="text"
-            android:paddingLeft="30dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView3" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="134dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_button1"
-            android:fontFamily="@font/inika"
-            android:text="Register"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/editTextText2" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="432dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="24dp"
-            android:alpha="0.80"
-            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/register_back"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/baseline_arrow_back"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="16dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/register" />
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <ProgressBar
-            android:id="@+id/progressBar"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/register_1"
+            android:layout_marginTop="80dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/register_home"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/home"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edittext1"
+            app:layout_constraintTop_toBottomOf="@id/first_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="16dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/register_age"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rounded_edittext_register"
+                    android:drawableStart="@drawable/baseline_calendar_today_24"
+                    android:drawablePadding="50dp"
+                    android:fontFamily="@font/montserrat"
+                    android:hint="Enter your Age"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textColorHint="@color/white"
+                    android:inputType="number"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="33dp"
+                    android:layout_height="23dp"
+                    android:src="@drawable/register_age"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="40dp"
+                    app:layout_constraintStart_toStartOf="@id/register_age"
+                    app:layout_constraintTop_toTopOf="@id/register_age" />
+
+                <Spinner
+                    android:id="@+id/spinnerGender"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rounded_edittext_register"
+                    android:paddingLeft="100dp"
+                    android:spinnerMode="dropdown"
+                    android:entries="@array/gender_options"
+                    app:layout_constraintTop_toBottomOf="@id/register_age"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_person_24"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toStartOf="@id/spinnerGender"
+                    app:layout_constraintTop_toTopOf="@id/spinnerGender" />
+
+                <ImageView
+                    android:layout_width="59dp"
+                    android:layout_height="23dp"
+                    android:src="@drawable/register_gender"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="40dp"
+                    app:layout_constraintStart_toStartOf="@id/spinnerGender"
+                    app:layout_constraintTop_toTopOf="@id/spinnerGender" />
+
+                <Spinner
+                    android:id="@+id/spinnerEducation"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rounded_edittext_register"
+                    android:paddingLeft="120dp"
+                    android:spinnerMode="dropdown"
+                    android:entries="@array/edu_options"
+                    app:layout_constraintTop_toBottomOf="@id/spinnerGender"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/education"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toStartOf="@id/spinnerEducation"
+                    app:layout_constraintTop_toTopOf="@id/spinnerEducation" />
+
+                <ImageView
+                    android:layout_width="105dp"
+                    android:layout_height="23dp"
+                    android:src="@drawable/register_edu"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="26dp"
+                    app:layout_constraintStart_toStartOf="@id/spinnerEducation"
+                    app:layout_constraintTop_toTopOf="@id/spinnerEducation" />
+
+                <Spinner
+                    android:id="@+id/spinnerboard"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rounded_edittext_register"
+                    android:paddingLeft="90dp"
+                    android:spinnerMode="dropdown"
+                    android:entries="@array/board_options"
+                    app:layout_constraintTop_toBottomOf="@id/spinnerEducation"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/board_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/board"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toStartOf="@id/spinnerboard"
+                    app:layout_constraintTop_toTopOf="@id/spinnerboard"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/board_text"
+                    android:layout_width="63dp"
+                    android:layout_height="23dp"
+                    android:src="@drawable/register_board"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="32dp"
+                    app:layout_constraintStart_toStartOf="@id/spinnerboard"
+                    app:layout_constraintTop_toTopOf="@id/spinnerboard"
+                    android:visibility="gone" />
+
+                <Spinner
+                    android:id="@+id/spinnersubjcet"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rounded_edittext_register"
+                    android:paddingLeft="100dp"
+                    android:spinnerMode="dropdown"
+                    android:entries="@array/subject_options"
+                    app:layout_constraintTop_toBottomOf="@id/spinnerboard"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/subject_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/subject"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toStartOf="@id/spinnersubjcet"
+                    app:layout_constraintTop_toTopOf="@id/spinnersubjcet"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/subject_text"
+                    android:layout_width="81dp"
+                    android:layout_height="23dp"
+                    android:src="@drawable/register_subject"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="28dp"
+                    app:layout_constraintStart_toStartOf="@id/spinnersubjcet"
+                    app:layout_constraintTop_toTopOf="@id/spinnersubjcet"
+                    android:visibility="gone" />
+
+                <Spinner
+                    android:id="@+id/spinnerdegree"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rounded_edittext_register"
+                    android:paddingLeft="95dp"
+                    android:spinnerMode="dropdown"
+                    app:layout_constraintTop_toBottomOf="@id/spinnerEducation"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/degree_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_school_24"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toStartOf="@id/spinnerdegree"
+                    app:layout_constraintTop_toTopOf="@id/spinnerdegree"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/degree_text"
+                    android:layout_width="81dp"
+                    android:layout_height="23dp"
+                    android:src="@drawable/register_degree"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="26dp"
+                    app:layout_constraintStart_toStartOf="@id/spinnerdegree"
+                    app:layout_constraintTop_toTopOf="@id/spinnerdegree"
+                    android:visibility="gone"/>
+
+                <Spinner
+                    android:id="@+id/spinnerbranch"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rounded_edittext_register"
+                    android:paddingLeft="95dp"
+                    android:spinnerMode="dropdown"
+                    app:layout_constraintTop_toBottomOf="@id/spinnerdegree"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/branch_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/branch"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toStartOf="@id/spinnerbranch"
+                    app:layout_constraintTop_toTopOf="@id/spinnerbranch"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/branch_text"
+                    android:layout_width="81dp"
+                    android:layout_height="23dp"
+                    android:src="@drawable/register_branch"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="26dp"
+                    app:layout_constraintStart_toStartOf="@id/spinnerbranch"
+                    app:layout_constraintTop_toTopOf="@id/spinnerbranch"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/hobbies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Interests:"
+                    android:fontFamily="@font/poppins"
+                    android:textSize="20sp"
+                    android:textColor="@color/lldarkblue"
+                    android:layout_marginTop="52dp"
+                    android:gravity="center"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/spinnerEducation" />
+
+                <EditText
+                    android:id="@+id/register_hobbies"
+                    android:layout_width="0dp"
+                    android:layout_height="65dp"
+                    android:background="@drawable/rounded_edittext_register2"
+                    android:fontFamily="@font/poppins"
+                    android:hint="Provide a discription\nof your Interests"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:textColorHint="@color/white"
+                    android:textSize="15sp"
+                    android:textColor="@color/white"
+                    android:padding="10dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/hobbies"/>
+
+                <Button
+                    android:id="@+id/register_register"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:text="Register"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/montserrat"
+                    android:textStyle="bold"
+                    android:textAllCaps="false"
+                    android:textSize="26sp"
+                    android:background="@drawable/gradient_button_register"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="45dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/register_hobbies" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </FrameLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/register_5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>

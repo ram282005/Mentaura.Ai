@@ -25,8 +25,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -57,8 +60,8 @@ public class CareerPath extends AppCompatActivity {
     private RelativeLayout bottomLayout;
     private LinearLayout chatLayout;
 
-    private static final String PERSONA_ID = "2ef9447f-e4fd-46a3-9f4c-af404a9a759e";
-    private static final String CONVERSATION_ID = "bb139998-6ccc-43bc-b000-74d298c7e5f8";
+    private static final String PERSONA_ID = "c216cde8-3b5d-41fc-8340-2874871db439";
+    private static final String CONVERSATION_ID = "5d85c664-9569-41af-ba36-a349311f6fde";
     private static final String API_KEY = "YTE0M2JhN2FlNjFmNDNlNzhjM2UwZTBkNTg3ZjY1MmE=";
     private static final String PREFS_NAME = "ChatPrefs";
     private static final String PREFS_KEY = "ChatMessages";
@@ -73,7 +76,6 @@ public class CareerPath extends AppCompatActivity {
         editTextCareerGoal = findViewById(R.id.message_edit_text);
         buttonSubmit = findViewById(R.id.send_btn);
         ImageView homeImageView = findViewById(R.id.imageView1);
-        navigateButton = findViewById(R.id.navigate_btn);
         bottomLayout = findViewById(R.id.bottom_layout);
         chatLayout = findViewById(R.id.chat_layout);
 
@@ -102,12 +104,7 @@ public class CareerPath extends AppCompatActivity {
             }
         });
 
-        navigateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigateToMainActivity();
-            }
-        });
+
 
 
         showLoadingDialog();
@@ -183,7 +180,8 @@ public class CareerPath extends AppCompatActivity {
         saveChats();
 
         // Send message to AI and get response
-        new SendMessageToAI().execute(messageText);
+        fetchUserDetailsAndSendToAI(messageText);
+        Log.d("CareerPath", "sendMessage: Message sent and saved.");
     }
 
     private void showTypingIndicator() {
@@ -262,15 +260,47 @@ public class CareerPath extends AppCompatActivity {
         }
     }
 
-    private void sendMessageToAIWithDetails(String age, String gender, String skills) {
-        String messageText = editTextCareerGoal.getText().toString().trim();
+    private void fetchUserDetailsAndSendToAI(String messageText) {
+        String email = mAuth.getCurrentUser().getEmail();
+        if (email != null) {
+            String emailKey = email.replace(".", ",");
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(emailKey);
 
-        if (!messageText.isEmpty()) {
-            new SendMessageToAI().execute(messageText, age, gender, skills);  // Pass additional details
-        } else {
-            Toast.makeText(CareerPath.this, "Please enter a message", Toast.LENGTH_SHORT).show();
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        // Fetch user details
+                        String age = snapshot.child("age").getValue(String.class);
+                        String gender = snapshot.child("gender").getValue(String.class);
+                        String education = snapshot.child("education").getValue(String.class);
+                        String hobby = snapshot.child("hobby").getValue(String.class);
+                        String interest = snapshot.child("interest").getValue(String.class);
+                        String subject = snapshot.child("subject").getValue(String.class);
+                        String stream = snapshot.child("stream").getValue(String.class);
+
+                        // Send user details along with the message to AI
+                        sendMessageToAIWithDetails(messageText, age, gender, education, hobby, interest, subject, stream);
+                    } else {
+                        Toast.makeText(CareerPath.this, "User details not found", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(CareerPath.this, "Failed to fetch user details", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
+
+    private void sendMessageToAIWithDetails(String messageText, String age, String gender, String education, String hobby, String interest, String subject, String stream) {
+        // Since the messageText is already checked before calling this method, no need to check again
+        new SendMessageToAI().execute(messageText, age, gender,  education, hobby, interest, subject, stream);  // Pass additional details
+    }
+
+
+
 
     private class SendMessageToAI extends AsyncTask<String, Void, String> {
         @Override
@@ -278,7 +308,11 @@ public class CareerPath extends AppCompatActivity {
             String messageText = strings[0];
             String age = strings[1];
             String gender = strings[2];
-            String skills = strings[3];
+            String education = strings[3];
+            String hobby = strings[4];
+            String interest = strings[5];
+            String subject = strings[6];
+            String stream = strings[7];
 
             try {
                 URL url = new URL("https://api.hyperleap.ai/conversations/" + CONVERSATION_ID + "/continue-sync");
@@ -289,12 +323,22 @@ public class CareerPath extends AppCompatActivity {
                 connection.setRequestProperty("x-hl-api-key", API_KEY);
                 connection.setDoOutput(true);
 
+                Log.d("SendMessageToAI", "doInBackground: Opened connection to API.");
+
+                // Construct JSON input
                 JSONObject jsonInput = new JSONObject();
                 jsonInput.put("personaId", PERSONA_ID);
                 jsonInput.put("message", messageText);
-                jsonInput.put("age", age);          // Add user's age
-                jsonInput.put("gender", gender);    // Add user's gender
-                jsonInput.put("skills", skills);    // Add user's skills
+                jsonInput.put("age", age);
+                jsonInput.put("gender", gender);
+                jsonInput.put("education", education);
+                jsonInput.put("hobby", hobby);
+                jsonInput.put("interest", interest);
+                jsonInput.put("subject", subject);
+                jsonInput.put("stream", stream);
+
+
+                Log.d("SendMessageToAI", "doInBackground: Sending JSON data to AI: " + jsonInput);
 
                 try (OutputStream os = connection.getOutputStream()) {
                     byte[] input = jsonInput.toString().getBytes("utf-8");
@@ -302,32 +346,37 @@ public class CareerPath extends AppCompatActivity {
                 }
 
                 int code = connection.getResponseCode();
+                Log.d("SendMessageToAI", "doInBackground: Response code from API: " + code);
+
                 if (code == 200) {
+                    Log.d("SendMessageToAI", "doInBackground: API responded successfully.");
                     try (Scanner scanner = new Scanner(connection.getInputStream())) {
                         scanner.useDelimiter("\\A");
                         return scanner.hasNext() ? scanner.next() : "";
                     }
                 } else {
+                    Log.e("SendMessageToAI", "doInBackground: Error response from API: " + code);
                     return "Error: " + code;
                 }
             } catch (Exception e) {
+                Log.e("SendMessageToAI", "doInBackground: Exception occurred - " + e.getMessage());
                 e.printStackTrace();
                 return "Exception: " + e.getMessage();
             }
         }
-
-
-
-
-    @Override
+        @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
+
+            Log.d("SendMessageToAI", "onPostExecute: Response from AI: " + response);
 
             // Remove typing indicator
             hideTypingIndicator();
 
             // Parse the JSON response to extract the assistant's message content
             String assistantMessage = parseAIResponse(response);
+
+            Log.d("SendMessageToAI", "onPostExecute: Parsed AI message: " + assistantMessage);
 
             // Add AI response to message list and update adapter
             Message aiMessage = new Message(assistantMessage, false, new Date());
@@ -337,12 +386,13 @@ public class CareerPath extends AppCompatActivity {
 
             saveChats();
 
-            if (assistantMessage.contains("feel free to ask")) {
+            if (assistantMessage.contains("Thank you for using Mentaura-AI. If you have any queries, contact us. All the best for your career journey!")) {
                 promptUserWithDialog();
             }
 
             saveJobRecommendations(assistantMessage);
         }
+
 
 
         private String parseAIResponse(String response) {
@@ -355,10 +405,11 @@ public class CareerPath extends AppCompatActivity {
                     return message.getString("content");
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e("ParseAIResponse", "Error parsing AI response", e);
             }
-            return "Error parsing response";
+            return "Sorry, I couldn't understand your request.";
         }
+
 
         private void promptUserWithDialog() {
             AlertDialog.Builder builder = new AlertDialog.Builder(CareerPath.this);
@@ -382,12 +433,12 @@ public class CareerPath extends AppCompatActivity {
         private void saveJobRecommendations(String assistantMessage) {
             Log.d("CareerPath", "saveJobRecommendations called with message: " + assistantMessage);
 
-            String triggerPattern = "Thank you for your (.*?)\\. Based on your (.*?), here are six career options that may be suitable for you:(.*)";
+            String triggerPattern = "Thank you for your responses\\. Based on your answers, here are the top (\\d+) career options that align with your interests and strengths:(.*?)Thank you for using Mentaura-AI\\.";
             Pattern pattern = Pattern.compile(triggerPattern, Pattern.DOTALL);
             Matcher matcher = pattern.matcher(assistantMessage);
 
             if (matcher.find()) {
-                String recommendations = matcher.group(3).trim();
+                String recommendations = matcher.group(2).trim();
                 String[] jobs = recommendations.split("\\d+\\. ");
 
                 Log.d("CareerPath", "Recommendations: " + recommendations);

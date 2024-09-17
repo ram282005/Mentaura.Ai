@@ -10,9 +10,12 @@
         android:id="@+id/typing_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_ai_message"
+        android:background="@drawable/rounded_corner_chat"
+        android:backgroundTint="@color/darkblue"
         android:padding="8dp"
         android:text="Typing..."
-        android:textColor="@android:color/black"
+        android:fontFamily="@font/roboto"
+        android:textColor="@android:color/white"
         android:textSize="16sp" />
+
 </LinearLayout>

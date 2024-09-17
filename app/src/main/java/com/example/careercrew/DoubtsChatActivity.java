@@ -4,13 +4,16 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -28,11 +31,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public class DoubtsChatActivity extends AppCompatActivity {
 
@@ -44,19 +54,23 @@ public class DoubtsChatActivity extends AppCompatActivity {
     EditText messageEditText;
     ImageButton sendButton;
     ImageView back, cameraButton;
-    List<Message1> messageList1;
-    MessageAdapter1 messageAdapter1;
-    public static final MediaType JSON = MediaType.get("application/json");
-    OkHttpClient client = new OkHttpClient();
+    List<Message> messageList;
+    MessageAdapter messageAdapter;
+
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+
+    private static final String PERSONA_ID = "e149c5f5-4fc8-491a-a4bd-879a06431d57";
+    private static final String CONVERSATION_ID = "ccd31043-81a7-42e9-b993-3595d9acb533";
+    private static final String API_KEY = "YTE0M2JhN2FlNjFmNDNlNzhjM2UwZTBkNTg3ZjY1MmE=";
+    private static final String PREFS_NAME = "ChatPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doubts_chat);
 
-        messageList1 = new ArrayList<>();
+        messageList = new ArrayList<>();
 
         recyclerView = findViewById(R.id.recycler_view);
         messageEditText = findViewById(R.id.message_edit_text);
@@ -69,8 +83,8 @@ public class DoubtsChatActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // Setup recycler view
-        messageAdapter1 = new MessageAdapter1(messageList1);
-        recyclerView.setAdapter(messageAdapter1);
+        messageAdapter = new MessageAdapter(messageList);
+        recyclerView.setAdapter(messageAdapter);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setStackFromEnd(true);
         recyclerView.setLayoutManager(llm);
@@ -78,15 +92,20 @@ public class DoubtsChatActivity extends AppCompatActivity {
         // Fetch the user's joined community from Firebase and send the welcome message
         fetchUserCommunity();
 
-        sendButton.setOnClickListener((v) -> {
-            String question = messageEditText.getText().toString().trim();
-            addToChat(question, Message1.SENT_BY_ME);
-            messageEditText.setText(null);
-            handleUserMessage(question);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = messageEditText.getText().toString().trim();
+                if (!message.isEmpty()) {
+                    sendMessage(message);
+                } else {
+                    Toast.makeText(DoubtsChatActivity.this, "Please enter a message", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
 
         back.setOnClickListener(v -> {
-            Intent intent = new Intent(DoubtsChatActivity.this, CommunitiesActivity.class);
+            Intent intent = new Intent(DoubtsChatActivity.this, MainActivity.class);
             startActivity(intent);
         });
 
@@ -142,7 +161,7 @@ public class DoubtsChatActivity extends AppCompatActivity {
     }
 
     private void handleImageResponse(Uri imageUri) {
-        addToChat("Our mentor would reach you in a few minutes.", Message1.SENT_BY_BOT);
+        sendMessage("\"Our mentor would reach you in a few minutes.\"");
     }
 
     private void fetchUserCommunity() {
@@ -159,7 +178,14 @@ public class DoubtsChatActivity extends AppCompatActivity {
                         String communityName = snapshot.getValue(String.class);
                         if (communityName != null) {
                             String welcomeMessage = "Hello, welcome to the \"" + communityName + "\" Doubts Section. Please feel free to ask your questions, and they will be addressed within a few minutes.";
-                            addToChat(welcomeMessage, Message1.SENT_BY_BOT);
+
+                            // Add the welcome message to the messageList but NOT the database
+                            Message welcomeMsg = new Message(welcomeMessage, false, new Date());  // 'false' indicates bot message
+                            messageList.add(welcomeMsg);
+
+                            // Notify adapter to update RecyclerView UI without saving to Firebase
+                            messageAdapter.notifyItemInserted(messageList.size() - 1);
+                            recyclerView.scrollToPosition(messageList.size() - 1);
                         }
                     }
                 }
@@ -172,30 +198,155 @@ public class DoubtsChatActivity extends AppCompatActivity {
         }
     }
 
-    void addToChat(String message, String sentBy) {
-        runOnUiThread(() -> {
-            messageList1.add(new Message1(message, sentBy));
-            messageAdapter1.notifyDataSetChanged();
-            recyclerView.smoothScrollToPosition(messageAdapter1.getItemCount());
-        });
+
+    private void sendMessage(String messageText) {
+        // Add message to list and update adapter
+        Message message = new Message(messageText, true, new Date());
+        messageList.add(message);
+        messageAdapter.notifyItemInserted(messageList.size() - 1);
+        recyclerView.scrollToPosition(messageList.size() - 1);
+
+        // Clear input field
+        messageEditText.setText("");
+
+        showTypingIndicator();
+
+        // Save messages to shared preferences
+        saveChatsToFirebase();
+
+        // Send message to AI and get response
+        new SendMessageToAI().execute(messageText);
     }
 
-    void handleUserMessage(String userMessage) {
-        String response;
-        userMessage = userMessage.toLowerCase();
+    private void showTypingIndicator() {
+        Message typingMessage = new Message(true);
+        messageList.add(typingMessage);
+        messageAdapter.notifyItemInserted(messageList.size() - 1);
+        recyclerView.scrollToPosition(messageList.size() - 1);
+    }
 
-        if (userMessage.equals("hello") || userMessage.equals("hi") || userMessage.equals("hey")) {
-            response = "Hi there! How can I help?";
-        } else if (userMessage.equals("how are you")) {
-            response = "I'm just a program, but thank you for asking!";
-        } else if (userMessage.equals("bye")) {
-            response = "Goodbye! Have a great day!";
-        } else {
-            response = "Sorry, I don't have information on that. Can you ask something else?";
+    private void hideTypingIndicator() {
+        if (messageList.size() > 0) {
+            Message lastMessage = messageList.get(messageList.size() - 1);
+            if (lastMessage.isTyping()) {
+                messageList.remove(messageList.size() - 1);
+                messageAdapter.notifyItemRemoved(messageList.size());
+            }
+        }
+    }
+
+    private class SendMessageToAI extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... strings) {
+            String messageText = strings[0];
+            try {
+                URL url = new URL("https://api.hyperleap.ai/conversations/" + CONVERSATION_ID + "/continue-sync");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("PATCH");
+                connection.setRequestProperty("Content-Type", "application/json; utf-8");
+                connection.setRequestProperty("Accept", "application/json");
+                connection.setRequestProperty("x-hl-api-key", API_KEY);
+                connection.setDoOutput(true);
+
+                JSONObject jsonInput = new JSONObject();
+                jsonInput.put("personaId", PERSONA_ID);
+                jsonInput.put("message", messageText);
+
+                try (OutputStream os = connection.getOutputStream()) {
+                    byte[] input = jsonInput.toString().getBytes("utf-8");
+                    os.write(input, 0, input.length);
+                }
+
+                int code = connection.getResponseCode();
+                if (code == 200) {
+                    try (Scanner scanner = new Scanner(connection.getInputStream())) {
+                        scanner.useDelimiter("\\A");
+                        return scanner.hasNext() ? scanner.next() : "";
+                    }
+                } else {
+                    return "Error: " + code;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
         }
 
-        addToChat(response, Message1.SENT_BY_BOT);
+        @Override
+        protected void onPostExecute(String result) {
+            if (result.startsWith("Error") || result.startsWith("Exception")) {
+                Toast.makeText(DoubtsChatActivity.this, result, Toast.LENGTH_SHORT).show();
+            } else {
+                hideTypingIndicator();
+
+                String assistant = parseAIResponse(result);
+                // Process AI response and display it in chat
+                Message message = new Message(assistant, false, new Date());
+                messageList.add(message);
+                messageAdapter.notifyItemInserted(messageList.size() - 1);
+                recyclerView.scrollToPosition(messageList.size() - 1);
+            }
+        }
     }
+
+    private String parseAIResponse(String response) {
+        try {
+            JSONObject jsonResponse = new JSONObject(response);
+            JSONArray choicesArray = jsonResponse.getJSONArray("choices");
+            if (choicesArray.length() > 0) {
+                JSONObject choice = choicesArray.getJSONObject(0);
+                JSONObject message = choice.getJSONObject("message");
+                return message.getString("content");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Error parsing response";
+    }
+
+    private void saveChatsToFirebase() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            String userEmailKey = currentUser.getEmail().replace(".", ",");  // Firebase doesn't allow '.' in keys
+            DatabaseReference chatRef = mDatabase.child("users").child(userEmailKey).child("Doubts");
+
+            chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    long conversationCount = snapshot.getChildrenCount();
+
+                    String newConversationCount = "conversation" + (conversationCount + 1);
+
+                    List<Map<String, Object>> conversation = new ArrayList<>();
+                    for (Message message : messageList) {
+                        Map<String, Object> chatMap = new HashMap<>();
+                        if (message.isUser()) {
+                            chatMap.put("user", message.getText());
+                        } else {
+                            chatMap.put("bot", message.getText());
+                        }
+                        chatMap.put("timestamp", message.getTimestamp().getTime());
+                        conversation.add(chatMap);
+                    }
+
+                    chatRef.child(newConversationCount).setValue(conversation)
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    Log.d("Firebase", "Chat history saved successfully under " + newConversationCount);
+                                } else {
+                                    Log.e("Firebase", "Failed to save chat history.", task.getException());
+                                }
+                            });
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.e("Firebase", "Failed to read conversations: " + error.getMessage());
+                }
+            });
+        }
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

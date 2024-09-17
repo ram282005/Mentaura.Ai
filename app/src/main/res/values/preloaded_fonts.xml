@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
-        <item>@font/</item>
+        <item>@font/archivo</item>
         <item>@font/inika</item>
         <item>@font/inter</item>
         <item>@font/irish_grover</item>
+        <item>@font/lexend_medium</item>
+        <item>@font/manrope_extrabold</item>
+        <item>@font/montserrat</item>
+        <item>@font/poppins</item>
+        <item>@font/roboto</item>
+        <item>@font/roboto_bold</item>
+        <item>@font/roboto_light</item>
+        <item>@font/roboto_medium</item>
     </array>
 </resources>

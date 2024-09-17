@@ -1,5 +1,6 @@
 package com.example.careercrew;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +27,7 @@ public class HomePage extends AppCompatActivity {
     private ProgressBar progressBar;
     private String chosenOption;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +36,10 @@ public class HomePage extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         dbRef = FirebaseDatabase.getInstance().getReference();
 
-        btnCareerPath = findViewById(R.id.buttonDiscoverCareer);
-        btnDreamRole = findViewById(R.id.buttonDreamRole);
-        buttonEnterDetails = findViewById(R.id.buttonenterdetails);
-        progressBar = findViewById(R.id.progressBar);
+        btnCareerPath = findViewById(R.id.home_career);
+        btnDreamRole = findViewById(R.id.home_dreamrole);
+        buttonEnterDetails = findViewById(R.id.home_register);
+        progressBar = findViewById(R.id.home_progressBar);
 
         btnCareerPath.setOnClickListener(new View.OnClickListener() {
             @Override

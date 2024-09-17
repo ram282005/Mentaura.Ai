@@ -1,16 +1,25 @@
 package com.example.careercrew;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputType;
+import android.view.MotionEvent;
 import android.view.View;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,28 +31,84 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUp extends AppCompatActivity {
 
-    EditText nameEditText, emailEditText, passwordEditText;
-    Button signUpButton;
-    ProgressBar progressBar;
+    private EditText nameEditText, emailEditText, passwordEditText;
+    private Button signUpButton;
+    private ProgressBar progressBar;
+    private ImageView back;
+    private boolean passwordVisible = false;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private Handler handler;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        // Initialize Firebase Database
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        nameEditText = findViewById(R.id.editTextText);
-        emailEditText = findViewById(R.id.editTextText1);
-        passwordEditText = findViewById(R.id.editTextText2);
-        signUpButton = findViewById(R.id.button);
-        progressBar = findViewById(R.id.progressBar);
+        nameEditText = findViewById(R.id.signup_name);
+        emailEditText = findViewById(R.id.signup_email);
+        passwordEditText = findViewById(R.id.signup_password);
+        signUpButton = findViewById(R.id.signup_signup);
+        progressBar = findViewById(R.id.signup_progressBar);
+        back = findViewById(R.id.signup_back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent_back = new Intent(SignUp.this, EntryPage.class);
+                startActivity(intent_back);
+            }
+        });
+
+        passwordEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_END = 2;  // For 'drawableEnd'
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (passwordEditText.getRight() - passwordEditText.getCompoundDrawables()[DRAWABLE_END].getBounds().width())) {
+                        if (passwordVisible) {
+                            // Hide password
+                            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                            passwordEditText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(getApplicationContext(), R.drawable.password), null, ContextCompat.getDrawable(getApplicationContext(), R.drawable.visibilityoff), null);
+                        } else {
+                            // Show password
+                            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                            passwordEditText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(getApplicationContext(), R.drawable.password), null, ContextCompat.getDrawable(getApplicationContext(), R.drawable.removepasswordhide), null);
+                        }
+                        passwordVisible = !passwordVisible;
+                        passwordEditText.setSelection(passwordEditText.getText().length());  // Move cursor to the end
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
+        emailEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // No action required before text changes
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Check if email format is correct
+                if (isValidEmail(charSequence.toString())) {
+                    // If email is valid, set the drawable to 'verified'
+                    setDrawableEnd(R.drawable.baseline_email_24, R.drawable.verified);
+                } else {
+                    // If email is not valid, set the drawable to 'unverified'
+                    setDrawableEnd(R.drawable.baseline_email_24, R.drawable.verified_right);
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // No action required after text changes
+            }
+        });
 
         handler = new Handler();
 
@@ -57,11 +122,25 @@ public class SignUp extends AppCompatActivity {
                 if (!email.isEmpty() && !pwd.isEmpty() && !name.isEmpty()) {
                     progressBar.setVisibility(View.VISIBLE); // Show the progress bar
                     registerUser(email, pwd, name);
+                } else if (!isValidEmail(email)) {
+                    // Show toast if email is not in the correct format
+                    Toast.makeText(SignUp.this, "Wrong format email", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(SignUp.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    private boolean isValidEmail(String email) {
+        return email != null && Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    // Method to set the drawable end image of the EditText
+    private void setDrawableEnd(int drawableRes1, int drawableRes) {
+        Drawable drawable1 = ContextCompat.getDrawable(this, drawableRes1);
+        Drawable drawable = ContextCompat.getDrawable(this, drawableRes);
+        emailEditText.setCompoundDrawablesWithIntrinsicBounds(drawable1, null, drawable, null);
     }
 
     private void registerUser(String email, String password, final String name) {

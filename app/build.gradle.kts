@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.preference)
     implementation(libs.firebase.auth)
     implementation(libs.json)
+    implementation (libs.guava)
     implementation(libs.okhttp)
     implementation(libs.gson)
     implementation(libs.play.services.auth)

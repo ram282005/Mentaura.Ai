@@ -2,17 +2,25 @@ package com.example.careercrew;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,6 +36,8 @@ import com.google.firebase.database.ValueEventListener;
 public class Login extends AppCompatActivity {
 
     private EditText editTextEmail, editTextPassword;
+    private ImageView back, google;
+    private boolean passwordVisible = false;
     private Button buttonLogin;
     private ProgressBar progressBar;
     private TextView textViewForgotPassword;
@@ -44,11 +54,74 @@ public class Login extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        editTextEmail = findViewById(R.id.editTextText);
-        editTextPassword = findViewById(R.id.editTextText2);
-        buttonLogin = findViewById(R.id.button);
+        editTextEmail = findViewById(R.id.login_email);
+        editTextPassword = findViewById(R.id.login_password);
+        back = findViewById(R.id.login_back);
+        google = findViewById(R.id.login_google_sign_up);
+        buttonLogin = findViewById(R.id.login_login);
         progressBar = findViewById(R.id.progressBar);
-        textViewForgotPassword = findViewById(R.id.textViewForgotPassword);
+        textViewForgotPassword = findViewById(R.id.login_forgot_password);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(Login.this, EntryPage.class);
+                startActivity(intent1);
+            }
+        });
+
+        google.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                googlesignin();
+            }
+        });
+
+        editTextPassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_END = 2;  // For 'drawableEnd'
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (editTextPassword.getRight() - editTextPassword.getCompoundDrawables()[DRAWABLE_END].getBounds().width())) {
+                        if (passwordVisible) {
+                            // Hide password
+                            editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                            editTextPassword.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(getApplicationContext(), R.drawable.password), null, ContextCompat.getDrawable(getApplicationContext(), R.drawable.visibilityoff), null);
+                        } else {
+                            // Show password
+                            editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                            editTextPassword.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(getApplicationContext(), R.drawable.password), null, ContextCompat.getDrawable(getApplicationContext(), R.drawable.removepasswordhide), null);
+                        }
+                        passwordVisible = !passwordVisible;
+                        editTextPassword.setSelection(editTextPassword.getText().length());  // Move cursor to the end
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
+        editTextEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // No action required before text changes
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Check if email format is correct
+                if (isValidEmail(charSequence.toString())) {
+                    // If email is valid, set the drawable to 'verified'
+                    setDrawableEnd(R.drawable.baseline_email_24, R.drawable.verified);
+                } else {
+                    // If email is not valid, set the drawable to 'unverified'
+                    setDrawableEnd(R.drawable.baseline_email_24, R.drawable.verified_right);
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // No action required after text changes
+            }
+        });
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +132,9 @@ public class Login extends AppCompatActivity {
                 if (!email.isEmpty() && !password.isEmpty()) {
                     progressBar.setVisibility(View.VISIBLE); // Show the progress bar
                     loginUser(email, password);
+                } else if (!isValidEmail(email)) {
+                    // Show toast if email is not in the correct format
+                    Toast.makeText(Login.this, "Wrong format email", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(Login.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 }
@@ -77,6 +153,17 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private boolean isValidEmail(String email) {
+        return email != null && Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    // Method to set the drawable end image of the EditText
+    private void setDrawableEnd(int drawableRes1, int drawableRes) {
+        Drawable drawable1 = ContextCompat.getDrawable(this, drawableRes1);
+        Drawable drawable = ContextCompat.getDrawable(this, drawableRes);
+        editTextEmail.setCompoundDrawablesWithIntrinsicBounds(drawable1, null, drawable, null);
     }
 
     private void loginUser(String email, String password) {
@@ -209,5 +296,9 @@ public class Login extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK); // Clear the back stack
         startActivity(intent);
         finish();
+    }
+
+    private void googlesignin() {
+
     }
 }

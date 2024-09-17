@@ -21,7 +21,7 @@ public class MessageAdapter1 extends RecyclerView.Adapter<MessageAdapter1.MyView
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View chatView = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item,null);
+        View chatView = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(chatView);
         return myViewHolder;
     }
@@ -33,7 +33,7 @@ public class MessageAdapter1 extends RecyclerView.Adapter<MessageAdapter1.MyView
             holder.leftChatView.setVisibility(View.GONE);
             holder.rightChatView.setVisibility(View.VISIBLE);
             holder.rightTextView.setText(message1.getMessage());
-        }else{
+        } else {
             holder.rightChatView.setVisibility(View.GONE);
             holder.leftChatView.setVisibility(View.VISIBLE);
             holder.leftTextView.setText(message1.getMessage());

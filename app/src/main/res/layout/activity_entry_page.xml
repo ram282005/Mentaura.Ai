@@ -1,102 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#64B7C9"
     tools:context=".EntryPage">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="393dp"
-            android:layout_height="566dp"
-            app:srcCompat="@drawable/entrypage1"
-            android:alpha="0.15"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="350dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="405dp"
-            android:layout_height="373dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/entrypage2" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="56dp"
-            android:layout_marginTop="340dp"
-            android:fontFamily="@font/inter"
-            android:text="Mentaura.AI"
-            android:textColor="@color/white"
-            android:textSize="45sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:layout_marginTop="425dp"
-            android:text="ELEVATE YOUR CAREER WITH AI GURU"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="216dp"
-            android:layout_height="24dp"
-            android:text="Don’t have an account!"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="620dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"  />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="200dp"
-            android:layout_height="74dp"
-            android:layout_marginTop="485dp"
-            android:background="@drawable/rounded_button"
-            android:fontFamily="@font/inter"
-            android:text="Log in"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="137dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sign up"
-            android:textAllCaps="false"
-            android:fontFamily="@font/inter"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:background="@drawable/rounded_button"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="660dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="@color/darkblue">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/entrypage1"
+                android:layout_marginTop="-400dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:alpha="0.15" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/entry_page_1"
+                android:layout_marginTop="210dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/outer1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/entry_outer"
+                android:layout_marginStart="38dp"
+                android:layout_marginTop="79dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/outer2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/entry_outer2"
+                android:layout_marginStart="51dp"
+                android:layout_marginTop="9dp"
+                app:layout_constraintTop_toTopOf="@id/outer1"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/outer3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/entry_outer3"
+                android:layout_marginStart="59dp"
+                android:layout_marginTop="6dp"
+                app:layout_constraintTop_toTopOf="@id/outer2"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="38dp"
+                android:layout_marginTop="185dp"
+                android:fontFamily="@font/roboto"
+                android:text="Hey there!"
+                android:textColor="#1C2A3A"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Mentaura.ai"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:textStyle=""
+                android:layout_marginStart="38dp"
+                android:layout_marginTop="210dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="300dp"
+                android:fontFamily="@font/roboto"
+                android:text="Elevate your career with AI Guru..!"
+                android:textColor="#1C2A3A"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/button_entry"
+                android:layout_width="183dp"
+                android:layout_height="50dp"
+                android:text="Log in"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto"
+                android:textAllCaps="false"
+                android:textSize="30sp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/gradient_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView6" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp"
+                android:fontFamily="@font/inter"
+                android:text="Don’t have an account?"
+                android:textColor="#1C2A3A"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/button_entry" />
+
+            <Button
+                android:id="@+id/button_entry_2"
+                android:layout_width="183dp"
+                android:layout_height="50dp"
+                android:text="Sign up"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto"
+                android:textAllCaps="false"
+                android:textSize="30sp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/gradient_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView7" />
+
+            <ImageView
+                android:id="@+id/google_sign_up"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:src="@drawable/google"
+                android:layout_marginTop="22dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/button_entry_2" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/entry_4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

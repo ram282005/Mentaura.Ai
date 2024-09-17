@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="start"
     android:padding="8dp">
 
-    <TextView
-        android:id="@+id/message_text"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bubble_bot"
+        android:id="@+id/bot_chat"
+        android:background="@drawable/rounded_corner_chat"
+        android:backgroundTint="@color/darkblue"
         android:padding="8dp"
-        android:textColor="@android:color/black" />
+        android:layout_marginEnd="80dp" >
+
+        <TextView
+            android:id="@+id/message_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:textSize="16sp"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/timestamp_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="10sp"
-        android:textColor="@android:color/darker_gray"
-        android:layout_marginTop="4dp"/>
-</LinearLayout>
+        android:fontFamily="@font/roboto"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="4dp"
+        android:layout_below="@id/bot_chat"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="8dp"/>
+
+</RelativeLayout>

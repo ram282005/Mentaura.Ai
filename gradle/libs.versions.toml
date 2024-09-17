@@ -31,6 +31,8 @@ retrofitConverterGson = "2.9.0"
 okhttpLoggingInterceptor = "5.0.0-alpha.3"
 volley = "1.2.1"
 firebaseCrashlyticsBuildtools = "3.0.2"
+guava = "31.1-android"
+
 
 
 [libraries]
@@ -65,6 +67,8 @@ okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-intercepto
 volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
 firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }  # Add this line
 work-runtime-ktx = "androidx.work:work-runtime-ktx:2.9.1"
+guava = { module = "com.google.guava:guava" }
+
 
 
 [plugins]

@@ -19,8 +19,8 @@ public class EntryPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry_page);
 
-        logIn = findViewById(R.id.button);
-        signUp = findViewById(R.id.button1);
+        logIn = findViewById(R.id.button_entry);
+        signUp = findViewById(R.id.button_entry_2);
 
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
